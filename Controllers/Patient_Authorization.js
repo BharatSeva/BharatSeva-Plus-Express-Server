@@ -28,12 +28,13 @@ const Patient_Login = async (req, res) => {
         }
         const token = Patient.P_createJWT();
         res.status(StatusCode.ACCEPTED).json({
+            status: "Success",
             user: {
                   name: Patient.name
             },
             token
         })
-    }
+    } 
     catch (err) {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
     }

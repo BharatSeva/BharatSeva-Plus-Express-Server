@@ -4,6 +4,7 @@ require('dotenv').config();
 // Incoming Data to JSON
 
 
+
 // extra Security packages goes here
 const helmet = require('helmet')
 const cors = require("cors")
@@ -48,14 +49,14 @@ app.use("/api/v1/hipAuth", Authorizationrouter)
 app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems])
 
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 5000; 
 
 const start = async () => {
     try {
         await ConnectDB(process.env.MONGODB_URL);
         app.listen(port, console.log(`Server is Listening to port ${port}.....`))
     } catch (error) {
-        console.log("Something Went Wrong Message: ", error.message)
+        console.log("Something Went Wrong, Message: ", error.message)
     }
 }
 start(); 

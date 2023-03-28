@@ -7,6 +7,7 @@ require('dotenv').config();
 const Register = async (req, res) => {
     try {
         // await User.deleteMany();
+        console.log(req.ip)
         const user = await User.create({ ...req.body })
         const token = user.createJWT();
         res.status(StatusCode.CREATED).json({ user: { name: user.name }, token })
@@ -21,7 +22,7 @@ const Login = async (req, res) => {
         if (!user) {
             res.status(StatusCode.BAD_REQUEST).json({ msg: "User Does Not Exit" })
             return;
-        }
+        } 
 
         const Ispasswordcorrect = await user.comparePasswords(password)
         if(!Ispasswordcorrect){
