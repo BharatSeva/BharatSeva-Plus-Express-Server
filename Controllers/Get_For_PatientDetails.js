@@ -21,25 +21,25 @@ const GetDetails = async (req, res) => {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
     }
 }
-
+ 
 
 
 const Get_Adetails = async (req, res) => {
     try {
         const { id: health_id } = req.params
-        const details = await Patient_problem_Schema.find({ health_id })
+        const details = await Patient_problem_Schema.find({ health_id }).select(["-__v", "-_id"]).sort("-Created_At")
 
         if (!details) {
             res.status(StatusCode.BAD_REQUEST).json({ message: "No Details Is Created Uptill Now" })
             return;
         }
 
-        res.status(StatusCode.OK).json({ details })
+        res.status(StatusCode.OK).json({ details, Request_USER: req.user.name, Details_length: details.length })
     }
     catch (err) {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
     }
 }
 
-
+ 
 module.exports = { GetDetails, Get_Adetails }
