@@ -29,11 +29,19 @@ const ConnectDB = require("./MongoDB/Database")
 // Patient Request Authentication Goes here
 const Patient_Authentication = require("./MiddleWare/Patient_Authentication");
 
+
+// This one for PatientBio_Data Details
+const PatientBioData = require("./Router/Patient_BioData")
+
 // Patient Access Router Goes Here
 const PatientRouter_Authorization = require("./Router/Patient_Authorization_Router")
 app.use('/api/v1/patientAuth', PatientRouter_Authorization)
 const PatientDetails_Router = require("./Router/Patient_Details_Router");
-app.use('/api/v1/patientDetails', Patient_Authentication, PatientDetails_Router)
+
+app.use('/api/v1/patientDetails', Patient_Authentication, PatientDetails_Router, PatientBioData)
+
+
+// app.use('/api/v1/', PatientBioData)
 
 
 

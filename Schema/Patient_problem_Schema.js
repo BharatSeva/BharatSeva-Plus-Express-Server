@@ -20,12 +20,14 @@ const Patient_Problem = new mongoose.Schema({
         type: String,
         required: [true, "HIP field can not be Empty"]
     },
+    medical_severity:{
+        type: String,
+        required: [true, "Severity of Your Condition is Required"]
+    },
     Created_At: {
         type: String,
         default: new Date(),
     }
 })
-
-
 
 module.exports = mongoose.model("Patient_Problem", Patient_Problem)
