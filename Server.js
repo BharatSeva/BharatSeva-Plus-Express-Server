@@ -52,7 +52,7 @@ const authentication = require("./MiddleWare/HIP_Authentication");
 const PatientProblems = require("./Router/Patient_problem_Router")
 
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
-const Authorizationrouter = require("./Router/HIP_Authorization_Router")
+const Authorizationrouter = require("./Router/HIP_Authorization_Router");
 app.use("/api/v1/hipAuth", Authorizationrouter)
 app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems])
 

@@ -9,6 +9,28 @@ const HIPs_Credentials_Schema = new mongoose.Schema({
         type:String,
         required:[true, "This Field is Must"],
         maxlength:20,
+        unique:true,
+        minlength:5
+    },
+    hip_number:{
+        type:Number,
+        required:[true, "This Field cannot be Empty"],
+        minlength:4,
+        maxlength:20,
+        unique:true
+    },
+    hip_license:{
+        type:Number,
+        required:[true, "This is Field Cannot be Empty"],
+        maxlength:20,
+        minlength:4,
+        unique:true
+    },
+    hip_address:{
+        type:String,
+        required:[true, "This field cannot be Empty"],
+        maxlength:100,
+        minlength:4
     },
     email:{
         type:String,
