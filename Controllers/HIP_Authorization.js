@@ -17,16 +17,17 @@ const Register = async (req, res) => {
 }
 const Login = async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email })
+        console.log(req.ip)
+        const { email, password, hip_license, hip_number } = req.body;
+        const user = await User.findOne({ email, hip_number, hip_license })
         if (!user) {
-            res.status(StatusCode.BAD_REQUEST).json({ msg: "User Does Not Exit" })
+            res.status(StatusCode.BAD_REQUEST).json({ message: "No User Exist With Given Credentials" })
             return;
-        } 
+        }
 
         const Ispasswordcorrect = await user.comparePasswords(password)
-        if(!Ispasswordcorrect){
-            res.status(StatusCode.UNAUTHORIZED).json({msg:"Incorrect Password"})
+        if (!Ispasswordcorrect) {
+            res.status(StatusCode.UNAUTHORIZED).json({ message: "Incorrect Password" })
             return;
         }
 
@@ -34,8 +35,8 @@ const Login = async (req, res) => {
         const token = user.createJWT();
         res.status(StatusCode.OK).json({ user: { name: user.name }, token })
     }
-    catch(err){
-        res.status(StatusCode.BAD_REQUEST).json({msg:err.message})
+    catch (err) {
+        res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
     }
 }
 
