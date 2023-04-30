@@ -2,8 +2,6 @@ const Jobs = require("../Schema/Patient_Info_Schema")
 const StatusCode = require("http-status-codes")
 
 
-
-
 const Get_allDetails = async (req, res) => {
     const patient = await Jobs.find({ createdBy: req.user.userID }).sort('createdAt')
     res.status(StatusCode.ACCEPTED).json({ patient, count: patient.length })
@@ -67,3 +65,4 @@ module.exports = {
     UpdateDetails,
     deleteDetails
 }
+

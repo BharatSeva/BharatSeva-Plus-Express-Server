@@ -40,8 +40,9 @@ const PatientDetails_Router = require("./Router/Patient_Details_Router");
 
 app.use('/api/v1/patientDetails', Patient_Authentication, PatientDetails_Router, PatientBioData)
 
-
-// app.use('/api/v1/', PatientBioData)
+// HIP Info Goes Here
+const HIP_Info = require("./Router/HIP_Info")
+app.use("/api/v1/hipinfo", HIP_Info)
 
 
 
@@ -57,7 +58,7 @@ app.use("/api/v1/hipAuth", Authorizationrouter)
 app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems])
 
 
-const port = process.env.PORT || 5000; 
+const port = 5000; 
 
 const start = async () => {
     try {
