@@ -51,11 +51,11 @@ const authentication = require("./MiddleWare/HIP_Authentication");
 // This one to create a patient problem 
 // Create Patient Route Goes Here 
 const PatientProblems = require("./Router/Patient_problem_Router")
-
+// app.use("/meonly/ok", PatientProblems)
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
 const Authorizationrouter = require("./Router/HIP_Authorization_Router");
 app.use("/api/v1/hipAuth", Authorizationrouter)
-app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems])
+app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems,PatientDetails_Router])
 
 
 const port = 5000; 

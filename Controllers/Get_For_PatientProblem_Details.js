@@ -21,7 +21,7 @@ const GetDetails = async (req, res) => {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
     }
 }
- 
+
 
 
 const Get_Adetails = async (req, res) => {
@@ -41,5 +41,5 @@ const Get_Adetails = async (req, res) => {
     }
 }
 
- 
+
 module.exports = { GetDetails, Get_Adetails }

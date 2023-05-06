@@ -6,7 +6,7 @@ const router = express.Router();
 
 
 router.route('/createpatientproblem').post(Create_PatientProblem)
-router.route('/UpdatePatient/:id').patch(Update_PatientProblem)
+router.route('/UpdatePatient/:id').delete(Update_PatientProblem)
 
 
 
