@@ -12,7 +12,7 @@ const xss = require("xss-clean")
 const rateLimiter = require("express-rate-limit");
 // Security Goes Here
 
-app.set('trust proxy', 1);
+app.set('trust proxy', 1); 
 app.use(rateLimiter({
     windowMs: 15 * 60 * 1000,
     max: 100,
@@ -55,7 +55,8 @@ const PatientProblems = require("./Router/Patient_problem_Router")
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
 const Authorizationrouter = require("./Router/HIP_Authorization_Router");
 app.use("/api/v1/hipAuth", Authorizationrouter)
-app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems,PatientDetails_Router])
+app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems,PatientDetails_Router, PatientBioData])
+
 
 
 const port = 5000; 
