@@ -2,35 +2,34 @@ const mongoose = require("mongoose")
 
 const JobsSchema = new mongoose.Schema({
     health_id: {
-        type: Number,
+        type: String,
         required: [true, "This field is must"],
-        minlength: [10, "This Fild can not be less than 10 characters"],
+        minlength: [10, "This field can not be less than 10 characters"],
+        maxlength: [10, "This field can not be more than 10 characters"],
         unique: true
     },
     fname: {
         type: String,
         required: [true, "This Field is Must"],
         maxlength: [10, "This Field can not be more than 10 characters"],
-        minlength: [3, "This Field can not be more than 3 characters"]
+        minlength: [3, "This Field can not be Less than 3 characters"]
     },
     middlename: {
         type: String,
-        required: [true, "This Field is Must"],
-        maxlength: [10, "This Field can not be more than 10 characters"],
-        minlength: [3, "This Field can not be more than 3 characters"]
+        maxlength: [10, "This Field can not be more than 10 characters"]
     },
     lname: {
         type: String,
         required: [true, "This Field is Must"],
         maxlength: [10, "This Field can not be more than 10 characters"],
-        minlength: [3, "This Field can not be more than 3 characters"]
+        minlength: [3, "This Field can not be Less than 3 characters"]
 
     },
     sex: {
         type: String,
         required: [true, "This Field is must"],
-        maxlength: [10, "This Field can not be more than 10 characters"],
-        minlength: [3, "This Field can not be more than 3 characters"]
+        maxlength: [5, "This Field can not be more than 10 characters"],
+        minlength: [1, "This Field can not be Less than 3 characters"]
     },
     createdBy: {
         type: String
@@ -56,7 +55,7 @@ const JobsSchema = new mongoose.Schema({
     MarriageStatus:{
         type:String,
         required:[true, "MarriageStatus is Must"],
-        maxlength:[10, "MarriageStatus cannot be more than 10"],
+        maxlength:[20, "MarriageStatus cannot be more than 10"],
         minlength:[1, "MarriageStatus cannot be less than 1"]
     },
     Weight:{
@@ -101,19 +100,25 @@ const JobsSchema = new mongoose.Schema({
         maxlength:[10, "twin cannot be more than 10"],
         minlength:[1, "twin cannot be less than 1"]
     }
-    // ,
-    // fathername:{
-    //     type :String,
-    //     required:[true, "fathername is Must"],
-    //     maxlength:[10, "fathername cannot be more than 10"],
-    //     minlength:[1, "fathername cannot be less than 1"]
-    // },
-    // mothername:{
-    //     type :String,
-    //     required:[true, "mothername is Must"],
-    //     maxlength:[10, "mothername cannot be more than 10"],
-    //     minlength:[1, "mothername cannot be less than 1"]
-    // }
+    ,
+    fathername:{
+        type :String,
+        required:[true, "fathername is Must"],
+        maxlength:[10, "fathername cannot be more than 10"],
+        minlength:[1, "fathername cannot be less than 1"]
+    },
+    mothername:{
+        type :String,
+        required:[true, "mothername is Must"],
+        maxlength:[10, "mothername cannot be more than 10"],
+        minlength:[1, "mothername cannot be less than 1"]
+    },
+    emergencynumber:{
+        type :Number,
+        required:[true, "emergencynumber is Must"],
+        maxlength:[10, "emergencynumber cannot be more than 10"],
+        minlength:[1, "emergencynumber cannot be less than 1"]
+    }
     
 
 

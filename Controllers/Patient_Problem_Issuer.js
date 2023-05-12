@@ -7,16 +7,12 @@ const Create_PatientProblem = async (req, res) => {
     try {
         const { health_id } = req.body
         const FindPatient = await Patient_Info.findOne({ health_id })
-        if (!FindPatient) {
-            res.status(StatusCode.BAD_REQUEST).json({ Message: `No Patient Exist With ${health_id}` })
-            return;
-        }
-        if (!health_id) {
-            res.status(StatusCode.BAD_GATEWAY).json({ message: "Patient ID is not Provided" })
+        if (!FindPatient || !health_id) {
+            res.status(StatusCode.BAD_REQUEST).json({ message: `No Patient Exist With ${health_id}` })
             return;
         }
         const info = await PatientProblem_Schema.create(req.body)
-        res.status(StatusCode.CREATED).json({ info })
+        res.status(StatusCode.CREATED).json({ message:"Successfully Created!", status:"Success" })
     }
     catch (err) {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })

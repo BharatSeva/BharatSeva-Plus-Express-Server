@@ -1,5 +1,7 @@
 const Jobs = require("../Schema/Patient_Info_Schema")
 const StatusCode = require("http-status-codes")
+const { GreetPatient } = require("../NodeMailer/NodeMessages")
+
 
 
 const Get_allDetails = async (req, res) => {
@@ -18,9 +20,11 @@ const Get_Adetails = async (req, res) => {
 
 const CreateDetails = async (req, res) => {
     try {
-        req.body.createdBy = req.user.userID
+        req.body.createdBy = req.user.name
         const patient = await Jobs.create(req.body)
-        res.status(StatusCode.CREATED).json({ patient })
+        // let meonly = await Jobs.deleteOne({health_id: req.body.health_id})
+        res.status(StatusCode.CREATED).json({ Status:"Success", message:"Record has been created Successfully" })
+        GreetPatient(req.body.email, req.body.fname, req.user.name)
     }
     catch (err) {
         res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
@@ -48,11 +52,11 @@ const deleteDetails = async (req, res) => {
         const details = await Jobs.findOneAndDelete({ health_id: req.params.id }, req.body, {
             new: true, runValidators: true
         })
-        if(!details){
-            res.status(StatusCode.NOT_FOUND).json({message:"Details Not Found"})
+        if (!details) {
+            res.status(StatusCode.NOT_FOUND).json({ message: "Details Not Found" })
             return;
         }
-        res.status(StatusCode.OK).json({message:"Details Deleted"})
+        res.status(StatusCode.OK).json({ message: "Details Deleted" })
     } catch (err) {
         res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
     }

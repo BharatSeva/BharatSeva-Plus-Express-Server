@@ -4,7 +4,7 @@ const { Get_allDetails, Get_Adetails, CreateDetails, UpdateDetails, deleteDetail
 const router = express.Router();
 
 
-router.route('/').get(Get_allDetails).post(CreateDetails)
+router.route('/createpatientbiodata').get(Get_allDetails).post(CreateDetails)
 router.route('/:id').get(Get_Adetails).delete(UpdateDetails).patch(deleteDetails);
 
 

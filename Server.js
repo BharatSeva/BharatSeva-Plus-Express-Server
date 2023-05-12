@@ -44,6 +44,8 @@ app.use('/api/v1/patientDetails', Patient_Authentication, PatientDetails_Router,
 const HIP_Info = require("./Router/HIP_Info")
 app.use("/api/v1/hipinfo", HIP_Info)
 
+// const { GreetPatient } = require("./NodeMailer/NodeMessages");
+// app.post("/sendmail", GreetPatient)
 
 
 // authentication middleware Goes here
