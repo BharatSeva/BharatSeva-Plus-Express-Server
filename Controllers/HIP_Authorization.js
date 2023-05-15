@@ -10,18 +10,17 @@ const Register = async (req, res) => {
         console.log(req.ip)
         const user = await User.create({ ...req.body })
         const token = user.createJWT();
-        res.status(StatusCode.CREATED).json({ user: { name: user.name }, token })
+        res.status(StatusCode.CREATED).json({ message: "Successful", user: { name: user.name }, token })
     } catch (err) {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
     }
 }
 const Login = async (req, res) => {
     try {
-        console.log(req.ip)
         const { email, password, hip_license, hip_number } = req.body;
         const user = await User.findOne({ email, hip_number, hip_license })
         if (!user) {
-            res.status(StatusCode.BAD_REQUEST).json({ message: "No User Exist With Given Credentials" })
+            res.status(StatusCode.BAD_REQUEST).json({ message: "No HealthCare Exist With Given Credentials" })
             return;
         }
 
@@ -33,7 +32,7 @@ const Login = async (req, res) => {
 
 
         const token = user.createJWT();
-        res.status(StatusCode.OK).json({ user: { name: user.name }, token })
+        res.status(StatusCode.OK).json({ message: "Successful", user: { name: user.name }, token })
     }
     catch (err) {
         res.status(StatusCode.BAD_REQUEST).json({ message: err.message })

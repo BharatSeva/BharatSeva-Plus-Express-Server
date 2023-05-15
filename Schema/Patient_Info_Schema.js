@@ -68,10 +68,11 @@ const JobsSchema = new mongoose.Schema({
         type :String,
         required:[true, "Email is Must"],
         maxlength:[50, "Email cannot be more than 10"],
-        minlength:[1, "Email cannot be less than 1"]
+        minlength:[1, "Email cannot be less than 1"],
+        unique:true
     },
     mobilenumber:{
-        type :Number,
+        type :String,
         required:[true, "Mobile Number is Must"],
         maxlength:[10, "Mobile Number cannot be more than 10"],
         minlength:[1, "Mobile Number cannot be less than 1"]
@@ -114,7 +115,7 @@ const JobsSchema = new mongoose.Schema({
         minlength:[1, "mothername cannot be less than 1"]
     },
     emergencynumber:{
-        type :Number,
+        type :String,
         required:[true, "emergencynumber is Must"],
         maxlength:[10, "emergencynumber cannot be more than 10"],
         minlength:[1, "emergencynumber cannot be less than 1"]
