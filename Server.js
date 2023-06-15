@@ -13,11 +13,11 @@ const rateLimiter = require("express-rate-limit");
 // Security Goes Here
 
 app.set('trust proxy', 1);
-app.use(rateLimiter({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-})
-);
+// app.use(rateLimiter({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+// })
+// );
 app.use(express.json())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(cors())
@@ -39,7 +39,7 @@ app.use('/api/v1/patientAuth', PatientRouter_Authorization)
 const PatientDetails_Router = require("./Router/Patient_Details_Router");
 
 app.use('/api/v1/patientDetails', Patient_Authentication, PatientDetails_Router, PatientBioData)
-
+ 
 // HIP Info Goes Here
 const HIP_Info = require("./Router/HIP_Info")
 app.use("/api/v1/hipinfo", HIP_Info)
@@ -67,7 +67,7 @@ const FirebaseRouter = require("./Router/FirebaseRouter")
 app.use("/api/v1/healthcare", FirebaseRouter)
 
 
- 
+
 
 
 

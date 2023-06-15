@@ -7,7 +7,7 @@ const Patient_problem_Schema = require("../Schema/Patient_problem_Schema");
 
 const GetDetails = async (req, res) => {
     try {
-        const { health_id } = req.body
+        const { id: health_id } = req.params
         const details = await Patient_problem_Schema.find({ health_id }).select(["-__v", "-_id"]).sort("-Created_At")
 
         if (!details) {

@@ -4,7 +4,7 @@ const router = express.Router();
 
 
 
-router.route('/get').get(GetDetails)
+router.route('/get/:id').get(GetDetails)
 router.route('/patientgetdata/:id').get(Get_Adetails)
 
 
