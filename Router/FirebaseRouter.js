@@ -9,7 +9,9 @@ const { Update_Records,
     BioDV,
     HealthUser,
     GET_HealthUser,
-    Get_HealthCare_Names
+    Get_HealthCare_Names,
+    HealthUser_Activity,
+    HealthUser_ActivityData
 } = require("../Firebase/Service")
 
 
@@ -25,6 +27,13 @@ router.get('/firebase/HealthID_Created', HealthID_Created)
 router.post("/Firebase/putHealthCare", HealthUser)
 router.get("/Firebase/GET_HealthUser/:id", GET_HealthUser)
 
-router.get('/Firebase/gethealthcare/:id', Get_HealthCare_Names)
+router.get('/Firebase/gethealthcare', Get_HealthCare_Names)
+
+router.post('/Firebase/getUser/:id', HealthUser_Activity)
+router.get('/Firebase/getUserActivityData/:id', HealthUser_ActivityData)
+
+
+
+
 
 module.exports = router 
