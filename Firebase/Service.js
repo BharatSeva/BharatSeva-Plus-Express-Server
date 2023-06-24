@@ -67,7 +67,8 @@ const Default_Records = {
     Records_Created: 0,
     View_permission: "Yes",
     Email: "Every Events",
-    LockedAccount: "No"
+    LockedAccount: "No",
+    Available_Money: 500
 }
 
 // Node Js Servers Goes Here
@@ -137,15 +138,53 @@ const Get_HealthCare_Names = async (req, res) => {
     try {
         let Names = await getDocs(collection(db, "BharatSeva_HealthCare"))
         Names.forEach((doc) => {
-            let name = doc.data()
+            let name = doc.data(), id = doc.id, location = doc.data().location
             name = name.name
-            HealthCare_Names.push(name)
+            HealthCare_Names.push({ name, id, location })
         })
         res.status(200).json({ status: "Success", healthcares: HealthCare_Names, totalname: HealthCare_Names.length })
     } catch (err) {
         res.status(400).json({ status: "Failed", message: err.message })
     }
 }
+
+// This One Will Fetch HealthCareDataFor Appointment
+const GetHealthCareForApp = async (req, res) => {
+    const { healthcareId } = req.params
+    try {
+        const location = doc(db, "BharatSeva_HealthCare", healthcareId )
+        const Data = await getDoc(location)
+        res.status(200).json({ data: Data.data() })
+    } catch (err) {
+        res.status(404).json({ message: err.message })
+
+    }
+}
+
+// Set the Appointment
+const SetAppointment = async (req, res) => {
+    const { healthCareId, appointmentId } = req.params
+
+    try {
+        await setDoc(doc(db, "BharatSeva_HealthCare", healthCareId, "Appointment", appointmentId), req.body)
+        res.status(200).json({ status: "Success" })
+    }
+    catch (err) {
+        res.status(400).json({ message: err.message })
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 module.exports = {
@@ -163,5 +202,7 @@ module.exports = {
     GET_HealthUser,
     Get_HealthCare_Names,
     HealthUser_Activity,
-    HealthUser_ActivityData
+    HealthUser_ActivityData,
+    SetAppointment,
+    GetHealthCareForApp
 } 

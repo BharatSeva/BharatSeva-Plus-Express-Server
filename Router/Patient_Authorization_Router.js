@@ -5,8 +5,8 @@ const { Patient_Register, Patient_Login } = require("../Controllers/Patient_Auth
 const router = express.Router();
 
 
-router.post('/PatientRegister', Patient_Register)
-router.post('/PatientLogin', Patient_Login)
+router.post('/userregister', Patient_Register)
+router.post('/userlogin', Patient_Login)
 
 
 

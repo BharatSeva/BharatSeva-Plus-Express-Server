@@ -1,11 +1,8 @@
 const express = require("express")
 const app = express();
 require('dotenv').config();
-// Incoming Data to JSON
 
-
-
-// extra Security packages goes here
+// Extra Security packages goes here
 const helmet = require('helmet')
 const cors = require("cors")
 const xss = require("xss-clean")
@@ -18,27 +15,28 @@ app.set('trust proxy', 1);
 //     max: 100,
 // })
 // );
-app.use(express.json())
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(cors())
 app.use(xss())
 
+// Incoming Data to JSON
+app.use(express.json())
 // Connect to MongoDB
 const ConnectDB = require("./MongoDB/Database")
 
-// Patient Request Authentication Goes here
-const Patient_Authentication = require("./MiddleWare/Patient_Authentication");
 
-
-// This one for PatientBio_Data Details
-const PatientBioData = require("./Router/Patient_BioData")
-
-// Patient Access Router Goes Here
+// Patient Authorization Router Goes Here
 const PatientRouter_Authorization = require("./Router/Patient_Authorization_Router")
-app.use('/api/v1/patientAuth', PatientRouter_Authorization)
-const PatientDetails_Router = require("./Router/Patient_Details_Router");
+app.use('/api/v1/userauth', PatientRouter_Authorization)
 
-app.use('/api/v1/patientDetails', Patient_Authentication, PatientDetails_Router, PatientBioData)
+
+
+
+const PatientBioData = require("./Router/Patient_BioData")
+const PatientDetails_Router = require("./Router/Patient_Details_Router");
+const Appointments = require("./Router/AppointsmentRouter")
+const Patient_Authentication = require("./MiddleWare/Patient_Authentication");
+app.use('/api/v1/userdetails', Patient_Authentication, PatientDetails_Router, PatientBioData, Appointments)
  
 // HIP Info Goes Here
 const HIP_Info = require("./Router/HIP_Info")
@@ -64,6 +62,7 @@ app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems, PatientDeta
 
 // Firebase Goes Here
 const FirebaseRouter = require("./Router/FirebaseRouter")
+
 app.use("/api/v1/healthcare", FirebaseRouter)
 
 

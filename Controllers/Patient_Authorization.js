@@ -2,7 +2,7 @@ const StatusCode = require("http-status-codes")
 const Patient_Credentials = require("../Schema/Patient_CredentialSchema")
 const Patient_Details = require("../Schema/Patient_Info_Schema")
 
-const { SendMail } = require("../NodeMailer/NodeMailer")
+const { LoginDetected, UserRegister } = require("../NodeMailer/NodeMessages")
 
 
 
@@ -11,18 +11,24 @@ const Patient_Register = async (req, res) => {
         let { health_id } = req.body
         const FindUser = await Patient_Details.findOne({ health_id })
         if (!FindUser) {
-            res.status(StatusCode.BAD_REQUEST).json({ message: "No User is Registered With Given Health ID" })
+            res.status(StatusCode.BAD_REQUEST).json({ status: "No User Found With Given Health ID", message: "HealthCare Need To Register You Before You Login.." })
             return;
         }
+        const IsUser = await Patient_Credentials.findOne({ health_id })
+        if (IsUser) {
+            res.status(StatusCode.BAD_REQUEST).json({ status: "User Already Registered!" })
+            return
+        }
         req.body.name = FindUser.fname + " " + FindUser.lname;
-        const user = await Patient_Credentials.create(req.body)
-        const token = user.P_createJWT();
-        res.status(StatusCode.CREATED).json({ user: { name: user.name }, token })
-        const Subject = "Registration Detected" ;
-        const Message = `Hello Mr.${FindUser.fname + FindUser.lname} We have Detected That you have Registered in Bharat Seva From Your Account, In case You have not initated reply to this mail immediately. Regards Bharat Seva` ;
-        SendMail(Patient.email, Subject, Message);
+        if (FindUser.email === req.body.email) {
+            await Patient_Credentials.create(req.body)
+            res.status(StatusCode.CREATED).json({ status: "Successfully Registered" })
+            // UserRegister(req.body.name, FindUser.health_id, FindUser.email)
+        } else {
+            res.status(StatusCode.BAD_REQUEST).json({ status: "Email Mismatched", message: "Use the same email address that you provided for HealthCare registration" })
+        }
     } catch (err) {
-        res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
+        res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ status: "Something Bad Happened!" })
     }
 }
 
@@ -31,25 +37,21 @@ const Patient_Login = async (req, res) => {
         const { health_id, password } = req.body
         const Patient = await Patient_Credentials.findOne({ health_id })
         if (!Patient) {
-            res.status(StatusCode.BAD_REQUEST).json({ message: "No User Exits with Given Credentials Wait For HIPs to Verify Your Information" })
+            res.status(StatusCode.BAD_REQUEST).json({ message: "No User Exits with Given Credentials" })
             return;
         }
         const IspasswordCorrect = await Patient.P_comparePass(password)
         if (!IspasswordCorrect) {
-            res.status(StatusCode.BAD_REQUEST).json({ message: "Password is Not Correct!!" })
+            res.status(StatusCode.BAD_REQUEST).json({ message: "Incorrect Password!" })
             return;
         }
         const token = Patient.P_createJWT();
         res.status(StatusCode.ACCEPTED).json({
-            status: "Success",
-            user: {
-                name: Patient.name
-            },
+            name: Patient.name,
+            healthId: Patient.health_id,
             token
         })
-        const Subject = "Login Detected" ;
-        const Message = `Hello Mr.${Patient.name} We have Detected New Login From Your Account` ;
-        SendMail(Patient.email, Subject, Message);
+        // LoginDetected(Patient.name, Patient.health_id, req.ip, Patient.email)
     }
     catch (err) {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
