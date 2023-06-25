@@ -24,6 +24,8 @@ app.use(express.json())
 // Connect to MongoDB
 const ConnectDB = require("./MongoDB/Database")
 
+// From FireBase Database 
+const FirebaseRouter = require("./Router/FirebaseRouter")
 
 // Patient Authorization Router Goes Here
 const PatientRouter_Authorization = require("./Router/Patient_Authorization_Router")
@@ -32,12 +34,17 @@ app.use('/api/v1/userauth', PatientRouter_Authorization)
 
 
 
+const Patient_Authentication = require("./MiddleWare/Patient_Authentication");
+const Patient = require("./Router/Patient")
 const PatientBioData = require("./Router/Patient_BioData")
 const PatientDetails_Router = require("./Router/Patient_Details_Router");
 const Appointments = require("./Router/AppointsmentRouter")
-const Patient_Authentication = require("./MiddleWare/Patient_Authentication");
 app.use('/api/v1/userdetails', Patient_Authentication, PatientDetails_Router, PatientBioData, Appointments)
- 
+app.use('/api/v1/user', Patient_Authentication, Patient)
+
+
+
+
 // HIP Info Goes Here
 const HIP_Info = require("./Router/HIP_Info")
 app.use("/api/v1/hipinfo", HIP_Info)
@@ -50,7 +57,7 @@ app.use("/api/v1/hipinfo", HIP_Info)
 const authentication = require("./MiddleWare/HIP_Authentication");
 // This one to create a patient problem 
 // Create Patient Route Goes Here 
-const PatientProblems = require("./Router/Patient_problem_Router")
+const PatientProblems = require("./Router/Patient_problem_Router") 
 // app.use("/meonly/ok", PatientProblems)
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
 const Authorizationrouter = require("./Router/HIP_Authorization_Router");
@@ -61,16 +68,7 @@ app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems, PatientDeta
 
 
 // Firebase Goes Here
-const FirebaseRouter = require("./Router/FirebaseRouter")
-
 app.use("/api/v1/healthcare", FirebaseRouter)
-
-
-
-
-
-
-
 
 
 const port = 5000;

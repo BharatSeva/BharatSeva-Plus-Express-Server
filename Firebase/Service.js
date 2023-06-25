@@ -1,5 +1,5 @@
 const { db } = require("./Config")
-
+const statusCode = require("http-status-codes")
 const { collection, getDocs, getDoc, addDoc, updateDoc, deleteDoc, doc, setDoc, increment,
     query,
     where
@@ -68,16 +68,31 @@ const Default_Records = {
     View_permission: "Yes",
     Email: "Every Events",
     LockedAccount: "No",
-    Available_Money: 500
+    Available_Money: 500,
+    account_status: "Trial"
 }
 
-// Node Js Servers Goes Here
-const HealthUser = async (req, res) => {
-    const NewData = doc(db, "BharatSeva_User", req.body.Health_ID)
-    const docSnap = await getDoc(NewData);
-    await updateDoc(NewData, req.body)
-    res.status(200).json({ Status: "Success" })
+// This WIll Update the setting of the user
+const UpdateHealthUserSetting = async (req, res) => {
+    const { healthId } = req.params
+    const { LockedAccount, View_permission, Email } = req.body
+    try {
+        if (LockedAccount || View_permission || Email) {
+            const NewData = doc(db, "BharatSeva_User", healthId)
+            const docSnap = await getDoc(NewData);
+            if (!docSnap.exists()) {
+                await setDoc(NewData, Default_Records)
+            }
+            await updateDoc(NewData, req.body)
+            res.status(200).json({ Status: "Updated" })
+        } else {
+            res.status(statusCode.NOT_ACCEPTABLE).json({ status: "Not Allowed!", messsage: "One More Attempt to update unwanted value could Lock Your account!" })
+        }
+    } catch (err) {
+        res.status(statusCode.BAD_REQUEST).json({ Status: "Not Allowed!" })
+    }
 }
+
 // Create Health Chnged Activity Records that will goe here
 const HealthUser_Activity = async (req, res) => {
     const { id: Health_ID } = req.params
@@ -94,7 +109,7 @@ const HealthUser_Activity = async (req, res) => {
 
 // GET HealthUSerActivityData
 const HealthUser_ActivityData = async (req, res) => {
-    const { id: Health_ID } = req.params
+    const { Health_ID } = req.params
     let Modified_By = [], Viewed_By = []
     try {
         const n = await getDocs(collection(db, "BharatSeva_User", Health_ID, "Viewed_By"))
@@ -105,7 +120,7 @@ const HealthUser_ActivityData = async (req, res) => {
         m.forEach((doc) => {
             Modified_By.push(doc.data())
         })
-        res.status(200).json({ status: "Success", Data: { Modified_By, Modified_Length: Modified_By.length, Viewed_By, Viewed_Length: Viewed_By.length } })
+        res.status(statusCode.OK).json({ Modified_By, Modified_Length: Modified_By.length, Viewed_By, Viewed_Length: Viewed_By.length })
     } catch (err) {
         console.log(err.message)
         res.status(400).json({ status: "Failed", message: err.message })
@@ -114,22 +129,25 @@ const HealthUser_ActivityData = async (req, res) => {
 
 
 // Get HealthUser Data
-const GET_HealthUser = async (req, res) => {
-    const { id: Health_ID } = req.params
-    const Newdata = doc(db, "BharatSeva_User", Health_ID)
-    let docSnap = await getDoc(Newdata)
-    if (!docSnap.exists()) {
-        await setDoc(Newdata, Default_Records)
-        docSnap = await getDoc(Newdata)
+const GET_HealthUserSettings = async (req, res) => {
+    try {
+        const { Health_ID } = req.params
+        const Newdata = doc(db, "BharatSeva_User", Health_ID)
+        let docSnap = await getDoc(Newdata)
+        if (!docSnap.exists()) {
+            await setDoc(Newdata, Default_Records)
+            docSnap = await getDoc(Newdata)
+        }
+        const ModifiedData = collection(db, "BharatSeva_User", Health_ID, "Modified_By")
+        const querySnapShot = await getDocs(ModifiedData)
+        let Datas
+        querySnapShot.forEach((doc) => {
+            Datas = doc.data()
+        })
+        res.status(200).json({ ...docSnap.data(), ...Datas })
+    } catch (err) {
+        res.status(statusCode.BAD_REQUEST).json({ status: "Not Allowed!" })
     }
-    const ModifiedData = collection(db, "BharatSeva_User", Health_ID, "Modified_By")
-    const querySnapShot = await getDocs(ModifiedData)
-    let Datas
-    querySnapShot.forEach((doc) => {
-        Datas = doc.data()
-        console.log(doc.data())
-    })
-    res.status(200).json({ status: "Success", Data: { ...docSnap.data(), ...Datas } })
 }
 
 // This One will fetch the data for Hospital Names
@@ -142,7 +160,7 @@ const Get_HealthCare_Names = async (req, res) => {
             name = name.name
             HealthCare_Names.push({ name, id, location })
         })
-        res.status(200).json({ status: "Success", healthcares: HealthCare_Names, totalname: HealthCare_Names.length })
+        res.status(200).json({ healthcares: HealthCare_Names, totalname: HealthCare_Names.length })
     } catch (err) {
         res.status(400).json({ status: "Failed", message: err.message })
     }
@@ -152,11 +170,12 @@ const Get_HealthCare_Names = async (req, res) => {
 const GetHealthCareForApp = async (req, res) => {
     const { healthcareId } = req.params
     try {
-        const location = doc(db, "BharatSeva_HealthCare", healthcareId )
+        const location = doc(db, "BharatSeva_HealthCare", healthcareId)
         const Data = await getDoc(location)
-        res.status(200).json({ data: Data.data() })
+        res.status(200).json({ healthcare: Data.data() })
+
     } catch (err) {
-        res.status(404).json({ message: err.message })
+        res.status(statusCode.BAD_REQUEST).json({ message: err.message })
 
     }
 }
@@ -198,8 +217,8 @@ module.exports = {
 
 
     // Node Js
-    HealthUser,
-    GET_HealthUser,
+    UpdateHealthUserSetting,
+    GET_HealthUserSettings,
     Get_HealthCare_Names,
     HealthUser_Activity,
     HealthUser_ActivityData,
