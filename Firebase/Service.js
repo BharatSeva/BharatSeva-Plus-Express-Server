@@ -69,7 +69,9 @@ const Default_Records = {
     Email: "Every Events",
     LockedAccount: "No",
     Available_Money: 500,
-    account_status: "Trial"
+    account_status: "Trial",
+    Account_Connection: true,
+    Total_request: 100
 }
 
 // This WIll Update the setting of the user
@@ -109,11 +111,11 @@ const HealthUser_Activity = async (req, res) => {
 
 // GET HealthUSerActivityData
 const HealthUser_ActivityData = async (req, res) => {
-    const { Health_ID } = req.params
+    const { healthId } = req.user
     let Modified_By = [], Viewed_By = []
     try {
-        const n = await getDocs(collection(db, "BharatSeva_User", Health_ID, "Viewed_By"))
-        const m = await getDocs(collection(db, "BharatSeva_User", Health_ID, "Modified_By"))
+        const n = await getDocs(collection(db, "BharatSeva_User", healthId.toString(), "Viewed_By"))
+        const m = await getDocs(collection(db, "BharatSeva_User", healthId.toString(), "Modified_By"))
         n.forEach((doc) => {
             Viewed_By.push(doc.data())
         })
@@ -131,21 +133,16 @@ const HealthUser_ActivityData = async (req, res) => {
 // Get HealthUser Data
 const GET_HealthUserSettings = async (req, res) => {
     try {
-        const { Health_ID } = req.params
-        const Newdata = doc(db, "BharatSeva_User", Health_ID)
+        const { healthId } = req.user
+        const Newdata = doc(db, "BharatSeva_User", healthId.toString())
         let docSnap = await getDoc(Newdata)
         if (!docSnap.exists()) {
             await setDoc(Newdata, Default_Records)
             docSnap = await getDoc(Newdata)
         }
-        const ModifiedData = collection(db, "BharatSeva_User", Health_ID, "Modified_By")
-        const querySnapShot = await getDocs(ModifiedData)
-        let Datas
-        querySnapShot.forEach((doc) => {
-            Datas = doc.data()
-        })
-        res.status(200).json({ ...docSnap.data(), ...Datas })
+        res.status(200).json({ ...docSnap.data() })
     } catch (err) {
+        console.log(err.message)
         res.status(statusCode.BAD_REQUEST).json({ status: "Not Allowed!" })
     }
 }
@@ -194,7 +191,22 @@ const SetAppointment = async (req, res) => {
 }
 
 
+// All the below Module are for Server Use Only !!!!
 
+
+const GetHealthUserSettingForServer = async (healthId) => {
+    const Newdata = doc(db, "BharatSeva_User", healthId)
+    let docSnap = await getDoc(Newdata)
+    let datas = docSnap.data()
+    return datas
+}
+
+const IncreaseRequestLimit = async (healthId) => {
+    const Increment = doc(db, "BharatSeva_User", healthId)
+    await updateDoc(Increment, {
+        Total_request:increment(-1)
+    })
+}
 
 
 
@@ -223,5 +235,11 @@ module.exports = {
     HealthUser_Activity,
     HealthUser_ActivityData,
     SetAppointment,
-    GetHealthCareForApp
+    GetHealthCareForApp,
+
+
+
+    // For Server Use Only
+    GetHealthUserSettingForServer,
+    IncreaseRequestLimit
 } 

@@ -3,7 +3,7 @@ const Patient_Credentials = require("../Schema/Patient_CredentialSchema")
 const Patient_Details = require("../Schema/Patient_Info_Schema")
 
 const { LoginDetected, UserRegister } = require("../NodeMailer/NodeMessages")
-
+const { GetHealthUserSettingForServer } = require("../Firebase/Service")
 
 
 const Patient_Register = async (req, res) => {
@@ -40,6 +40,13 @@ const Patient_Login = async (req, res) => {
             res.status(StatusCode.BAD_REQUEST).json({ message: "No User Exits with Given Credentials" })
             return;
         }
+
+        const IsAccountSuspended = await GetHealthUserSettingForServer(health_id.toString())
+        if (!IsAccountSuspended.Account_Connection || !IsAccountSuspended.Total_request) {
+            res.status(StatusCode.NOT_ACCEPTABLE).json({ status: "Account Suspended!", message: "Your Account Has been suspended due to Unusual Request We Received!, Please Mail to 21vaibhav11@gmail.com for Continued Service" })
+            return
+        }
+
         const IspasswordCorrect = await Patient.P_comparePass(password)
         if (!IspasswordCorrect) {
             res.status(StatusCode.BAD_REQUEST).json({ message: "Incorrect Password!" })

@@ -17,9 +17,22 @@ const UserRegister = async(name, healthId, email)=>{
     SendMail(email, `नमस्कार 🙏`, txt)
 }
 
+const AccountSuspended = async(name, email)=>{
+    const txt = `Dear ${name}, We Have Temporarily Suspended Your Account Because of Unusual Request We have Noticed!. Mail to 21vaibhav11@gmail.com For Continued Service`
+    SendMail(email, `Account Suspended`, txt)
+}
+
+
+
+
+
+
+
+
 
 module.exports = {
     GreetPatient,
     LoginDetected,
-    UserRegister
+    UserRegister,
+    AccountSuspended
 }
