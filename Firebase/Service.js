@@ -6,59 +6,65 @@ const { collection, getDocs, getDoc, addDoc, updateDoc, deleteDoc, doc, setDoc, 
 } = require("firebase/firestore")
 
 
-const BharatCollectionRef = collection(db, "BharatSeva")
-
-
-const Getdata = async (HID) => {
-    const docRef = doc(db, "BharatSeva", HID);
-    const docSnap = await getDoc(docRef);
-    return docSnap.data();
+// HealthCare Default Preferance
+const Default_HealthcareRecords = {
+    RecordsCreated: 0,
+    HealthID_Created: 0,
+    RecordsViewed: 0,
+    Biodata_Viewed: 0,
+    LockedAccount: false,
+    available: true,
+    TotalNoOfViews: 0,
+    email: "Rare",
+    about: "--/--",
+    name: "--/--",
+    rating: 1 / 10,
+    Acccount_Deletion: false
 }
-
-const Update_Records = async (req, res) => {
-    const NewData = doc(db, "BharatSeva", req.body.HealthId)
-    await updateDoc(NewData, req.body)
-    res.status(200).json({ Status: "Successfull" })
-}
-
-const GetAllData = async (req, res) => {
-    const docRef = doc(db, "BharatSeva", req.headers.health_id);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-        res.status(200).json({ status: "Success", Data: docSnap.data() })
-    } else {
-        res.status(200).json({ status: "Failed", message: "Could Not Find that Attribute" })
+// This Will Update HealthCare Preferance
+const UpdateHealthCarePreferance = async (req, res) => {
+    try {
+        const { healthcareId } = req.user
+        const NewData = doc(db, "BharatSeva_HealthCare", healthcareId.toString())
+        const DocSnap = await getDoc(NewData)
+        if (!DocSnap.exists()) {
+            await setDoc(NewData, Default_HealthcareRecords)
+        }
+        const { email, available } = req.body
+        if (email && available) {
+            await updateDoc(NewData, { available, email })
+            res.status(200).json({ Status: "Successfull" })
+        }
+        else if (available) {
+            await updateDoc(NewData, { available })
+            res.status(200).json({ Status: "Successfull" })
+        } else if (email) {
+            await updateDoc(NewData, { email })
+            res.status(200).json({ Status: "Successfull" })
+        }
+        else {
+            res.status(statusCode.NOT_ACCEPTABLE).json({ status: "Not Allowed!", message: "You Don't Have Permission to perform this task!" })
+        }
+    } catch (err) {
+        console.log(err.message)
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ status: "Given ID Not Found!" })
     }
 }
 
-const Update_No_Of_Views = async (req, res) => {
-    const docRef = doc(db, "BharatSeva", req.headers.health_id);
-    await updateDoc(docRef, { "TotalNoOfViews": increment(1) })
-    res.status(200).json({ status: "Success" })
-}
-
-const RecordsViewed = async (req, res) => {
-    const docRef = doc(db, "BharatSeva", req.headers.health_id);
-    await updateDoc(docRef, { "RecordsViewed": increment(1) })
-    res.status(200).json({ status: "Success" })
-}
-
-const HealthID_Created = async (req, res) => {
-    const docRef = doc(db, "BharatSeva", req.headers.health_id);
-    await updateDoc(docRef, { "HealthID_Created": increment(1) })
-    res.status(200).json({ status: "Success" })
-}
-
-const RecordsCreated = async (req, res) => {
-    const docRef = doc(db, "BharatSeva", req.headers.health_id);
-    await updateDoc(docRef, { RecordsCreated: increment(1) })
-    res.status(200).json({ status: "Success" })
-}
-
-const BioDV = async (req, res) => {
-    const docRef = doc(db, "BharatSeva", req.headers.health_id);
-    await updateDoc(docRef, { "BioDV": increment(1) })
-    res.status(200).json({ status: "Success" })
+// This One Is For HealthCare Getting All The Data For User Search Apppointment
+const GetAllData = async (req, res) => {
+    try {
+        const { HealthCareID } = req.params
+        const docRef = doc(db, "BharatSeva_HealthCare", HealthCareID);
+        let docSnap = await getDoc(docRef);
+        if (!docSnap.exists()) {
+            await setDoc(docRef, Default_HealthcareRecords)
+            docSnap = await getDoc(docRef);
+        }
+        res.status(200).json({ stats: docSnap.data() })
+    } catch (err) {
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
+    }
 }
 const Default_Records = {
     Profile_Viewed: 0,
@@ -93,20 +99,6 @@ const UpdateHealthUserSetting = async (req, res) => {
     } catch (err) {
         res.status(statusCode.BAD_REQUEST).json({ Status: "Not Allowed!" })
     }
-}
-
-// Create Health Chnged Activity Records that will goe here
-const HealthUser_Activity = async (req, res) => {
-    const { id: Health_ID } = req.params
-    try {
-        await setDoc(doc(db, "BharatSeva_User", Health_ID, "Viewed_By", req.headers.id), { ...req.body, Time: new Date() })
-        await setDoc(doc(db, "BharatSeva_User", Health_ID, "Modified_By", req.headers.id), { ...req.body, Time: new Date() })
-        res.status(200).json({ status: "Success", Data: "Goes" })
-    } catch (err) {
-        console.log(err.message)
-        res.status(200).json({ status: "Failed", Data: "Failed" })
-    }
-
 }
 
 // GET HealthUSerActivityData
@@ -173,22 +165,38 @@ const GetHealthCareForApp = async (req, res) => {
 
     } catch (err) {
         res.status(statusCode.BAD_REQUEST).json({ message: err.message })
-
     }
 }
 
-// Set the Appointment
-const SetAppointment = async (req, res) => {
-    const { healthCareId, appointmentId } = req.params
-
+// This Will Fetch HealthCare Preferance Data From Firebase
+const GetHealthCarePreferance = async (req, res) => {
     try {
-        await setDoc(doc(db, "BharatSeva_HealthCare", healthCareId, "Appointment", appointmentId), req.body)
-        res.status(200).json({ status: "Success" })
-    }
-    catch (err) {
-        res.status(400).json({ message: err.message })
+        const { healthcareId } = req.user
+        const location = doc(db, "BharatSeva_HealthCare", healthcareId.toString())
+        let docSnap = await getDoc(location)
+        if (!docSnap.exists()) {
+            await setDoc(location, Default_HealthcareRecords)
+            docSnap = await getDoc(location)
+        }
+        let email = docSnap.data().email, available = docSnap.data().available, Acccount_Deletion = docSnap.data().Acccount_Deletion
+        res.status(statusCode.OK).json({ email, available, Acccount_Deletion })
+    } catch (err) {
+        console.log(err.message)
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ status: "Something Unexpected Happened!" })
     }
 }
+
+
+// THis One Will DeleteHealthcare Account Preferance ONly
+const DeleteHealthCareAccountChangePreferance = async (healthcareId) => {
+    const location = doc(db, "BharatSeva_HealthCare", healthcareId.toString())
+    await updateDoc(location, {
+        Acccount_Deletion: true
+    })
+}
+
+
+
 
 
 // All the below Module are for Server Use Only !!!!
@@ -204,7 +212,37 @@ const GetHealthUserSettingForServer = async (healthId) => {
 const IncreaseRequestLimit = async (healthId) => {
     const Increment = doc(db, "BharatSeva_User", healthId)
     await updateDoc(Increment, {
-        Total_request:increment(-1)
+        Total_request: increment(-1)
+    })
+}
+// This Will Record HealthCare RecordsCreated Stats
+const Healthcare_RecordsCreated_Stats = async (name, healthcareId, healthId, location) => {
+    const Increment = doc(db, "BharatSeva_HealthCare", healthcareId)
+    await updateDoc(Increment, {
+        RecordsCreated: increment(1)
+    })
+    const create = collection(db, "BharatSeva_User", healthId, "Modified_By")
+    await addDoc(create, {
+        name, location, healthcareId
+    })
+    const Increments = doc(db, "BharatSeva_User", healthId)
+    await updateDoc(Increments, {
+        Records_Created: increment(1)
+    })
+}
+
+const HealthCare_RecordsViewed_Stats = async (name, healthcareId, healthId, location) => {
+    const Increment = doc(db, "BharatSeva_HealthCare", healthcareId)
+    await updateDoc(Increment, {
+        RecordsViewed: increment(1)
+    })
+    const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
+    await addDoc(create, {
+        name, location, healthcareId
+    })
+    const IncrementUser = doc(db, "BharatSeva_User", healthId)
+    await updateDoc(IncrementUser, {
+        Records_Viewed: increment(1)
     })
 }
 
@@ -215,31 +253,25 @@ const IncreaseRequestLimit = async (healthId) => {
 
 
 
-
-
-
 module.exports = {
-    Update_Records,
+    UpdateHealthCarePreferance,
     GetAllData,
-    Update_No_Of_Views,
-    HealthID_Created,
-    RecordsViewed,
-    RecordsCreated,
-    BioDV,
 
 
     // Node Js
     UpdateHealthUserSetting,
     GET_HealthUserSettings,
     Get_HealthCare_Names,
-    HealthUser_Activity,
     HealthUser_ActivityData,
-    SetAppointment,
     GetHealthCareForApp,
+    GetHealthCarePreferance,
+    DeleteHealthCareAccountChangePreferance,
 
 
 
     // For Server Use Only
     GetHealthUserSettingForServer,
-    IncreaseRequestLimit
+    IncreaseRequestLimit,
+    Healthcare_RecordsCreated_Stats,
+    HealthCare_RecordsViewed_Stats
 } 

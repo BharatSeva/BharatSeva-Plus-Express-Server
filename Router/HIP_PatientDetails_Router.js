@@ -9,4 +9,14 @@ router.route('/:id').get(Get_Adetails).delete(UpdateDetails).patch(deleteDetails
 
 
 
+
+
+// From Firebase
+const { UpdateHealthCarePreferance, GetHealthCarePreferance } = require("../Firebase/Service")
+router.route("/healthcare/changepreferance").post(UpdateHealthCarePreferance)
+router.route("/healthcare/getpreferance").get(GetHealthCarePreferance)
+
+
+
+
 module.exports = router; 

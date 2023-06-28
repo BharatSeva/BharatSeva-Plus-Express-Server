@@ -16,11 +16,11 @@ const Patient_Problem = new mongoose.Schema({
         type: Number,
         required: [true, "Health ID is Must to have"]
     },
-    HIP_name: {
+    healthcareName: {
         type: String,
-        required: [true, "HIP field can not be Empty"]
+        required: [true, "HealthCare Name can not be Empty"]
     },
-    medical_severity:{
+    medical_severity: {
         type: String,
         required: [true, "Severity of Your Condition is Required"]
     },

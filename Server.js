@@ -6,7 +6,14 @@ require('dotenv').config();
 const helmet = require('helmet')
 const cors = require("cors")
 const xss = require("xss-clean")
+
+// Flexible Rate Limiter!
+const { RateLimit } = require("./MiddleWare/RateLimiter")
+// app.use(RateLimit)
+
+// Express Rate Limiter
 const rateLimiter = require("express-rate-limit");
+
 // Security Goes Here
 
 app.set('trust proxy', 1);
@@ -34,7 +41,7 @@ const FirebaseRouter = require("./Router/FirebaseRouter")
 const PatientRouter_Authorization = require("./Router/Patient_Authorization_Router")
 app.use('/api/v1/userauth', PatientRouter_Authorization)
 
-
+// Below Will handle PatientRoutings
 const Patient_Authentication = require("./MiddleWare/Patient_Authentication");
 const Patient = require("./Router/Patient")
 const PatientBioData = require("./Router/Patient_BioData")
@@ -46,27 +53,31 @@ app.use('/api/v1/user', Patient_Authentication, Patient)
 
 
 
-// HIP Info Goes Here
-const HIP_Info = require("./Router/HIP_Info")
-app.use("/api/v1/hipinfo", HIP_Info)
 
-// const { GreetPatient } = require("./NodeMailer/NodeMessages");
-// app.post("/sendmail", GreetPatient)
+// HealthCare Login/Register Function Goes Here
+const Authorizationrouter = require("./Router/HIP_Authorization_Router");
+app.use("/api/v1/healthcareauth", Authorizationrouter)
+
+
+
+const authentication = require("./MiddleWare/HIP_Authentication");
+const HIP_Info = require("./Router/HIP_Info")
+const GET_Patient = require("./Router/HIP_Patient_Issues")
+const HIP_router = require("./Router/HIP_PatientDetails_Router");
+
+app.use("/api/v1/healthcaredetails", authentication, HIP_Info, HIP_router, PatientBioData)
+app.use("/api/v1/healthcare",authentication, GET_Patient)
+// HIP Info Goes Here
 
 
 // authentication middleware Goes here
-const authentication = require("./MiddleWare/HIP_Authentication");
 // This one to create a patient problem 
 // Create Patient Route Goes Here 
-const PatientProblems = require("./Router/Patient_problem_Router") 
-// app.use("/meonly/ok", PatientProblems)
-const HIP_router = require("./Router/HIP_PatientDetails_Router");
-const Authorizationrouter = require("./Router/HIP_Authorization_Router");
-app.use("/api/v1/hipAuth", Authorizationrouter)
-app.use("/api/v1/hip", [authentication, HIP_router, PatientProblems, PatientDetails_Router, PatientBioData])
 
 
 
+// const { GreetPatient } = require("./NodeMailer/NodeMessages");
+// app.post("/sendmail", GreetPatient)
 
 // Firebase Goes Here
 app.use("/api/v1/healthcare", FirebaseRouter)

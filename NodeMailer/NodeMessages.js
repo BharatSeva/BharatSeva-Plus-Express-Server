@@ -22,7 +22,11 @@ const AccountSuspended = async(name, email)=>{
     SendMail(email, `Account Suspended`, txt)
 }
 
-
+// This One Will Send Message To DeleteAccount
+const DeleteHealthCareAccountmessage = async(name, healthcareId, email)=>{
+    const txt = `Dear ${name} You Have requested To delete your Account With ID ${healthcareId}. Kindly Note That in 3-4 days your account will be removed. If you changed your mind and want to stop it then mail to 21vaibhav11@gmail.com to stop deletion!`
+    SendMail(email, `Account Deletion`, txt)
+}
 
 
 
@@ -34,5 +38,6 @@ module.exports = {
     GreetPatient,
     LoginDetected,
     UserRegister,
-    AccountSuspended
+    AccountSuspended,
+    DeleteHealthCareAccountmessage
 }
