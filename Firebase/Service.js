@@ -19,7 +19,10 @@ const Default_HealthcareRecords = {
     about: "--/--",
     name: "--/--",
     rating: 1 / 10,
-    Acccount_Deletion: false
+    Acccount_Deletion: false,
+    Total_appointments: 0,
+    Total_request: 20,
+    appointment_fee: 50
 }
 // This Will Update HealthCare Preferance
 const UpdateHealthCarePreferance = async (req, res) => {
@@ -77,7 +80,8 @@ const Default_Records = {
     Available_Money: 500,
     account_status: "Trial",
     Account_Connection: true,
-    Total_request: 100
+    Total_request: 30,
+    Total_appointments: 0
 }
 
 // This WIll Update the setting of the user
@@ -156,12 +160,14 @@ const Get_HealthCare_Names = async (req, res) => {
 }
 
 // This One Will Fetch HealthCareDataFor Appointment
+// Only TO Fetch Required value for user appointment!
 const GetHealthCareForApp = async (req, res) => {
     const { healthcareId } = req.params
     try {
         const location = doc(db, "BharatSeva_HealthCare", healthcareId)
         const Data = await getDoc(location)
-        res.status(200).json({ healthcare: Data.data() })
+        let healthcareID = Data.id, locate = Data.data().location, about = Data.data().about, name = Data.data().name, appointment_fee = Data.data().appointment_fee, rating = Data.data().rating
+        res.status(200).json({ healthcare: { locate, about, name, appointment_fee, rating, healthcareID } })
 
     } catch (err) {
         res.status(statusCode.BAD_REQUEST).json({ message: err.message })
@@ -223,7 +229,7 @@ const Healthcare_RecordsCreated_Stats = async (name, healthcareId, healthId, loc
     })
     const create = collection(db, "BharatSeva_User", healthId, "Modified_By")
     await addDoc(create, {
-        name, location, healthcareId
+        name, location, healthcareId, Type: "Records"
     })
     const Increments = doc(db, "BharatSeva_User", healthId)
     await updateDoc(Increments, {
@@ -238,7 +244,7 @@ const HealthCare_RecordsViewed_Stats = async (name, healthcareId, healthId, loca
     })
     const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
     await addDoc(create, {
-        name, location, healthcareId
+        name, location, healthcareId, Type: "Records"
     })
     const IncrementUser = doc(db, "BharatSeva_User", healthId)
     await updateDoc(IncrementUser, {
@@ -246,9 +252,53 @@ const HealthCare_RecordsViewed_Stats = async (name, healthcareId, healthId, loca
     })
 }
 
+// This Will Log When HealthCare Viewed User Bio data!!
+const HealthCare_ViewBioDataStats = async (name, healthcareId, healthId, location) => {
+    const locate = doc(db, "BharatSeva_HealthCare", healthcareId)
+    await updateDoc(locate, {
+        Biodata_Viewed: increment(1)
+    })
 
+    const Userlocate = doc(db, "BharatSeva_User", healthId)
+    await updateDoc(Userlocate, {
+        Profile_Viewed: increment(1)
+    })
 
+    const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
+    await addDoc(create, {
+        name, location, healthcareId, Type: "BioData"
+    })
+}
 
+// This Will Count For Appointments
+const AppointmentCounter = async (healthcareId, healthId) => {
+    const locate = doc(db, "BharatSeva_User", healthId)
+    await updateDoc(locate, {
+        Total_appointments: increment(1)
+    })
+    const HealthcareLocate = doc(db, "BharatSeva_HealthCare", healthcareId)
+    await updateDoc(HealthcareLocate, {
+        Total_appointments: increment(1)
+    })
+}
+
+// This Will Create User In Firebase To Log Stats
+const CreateUserInFirebase = async (healthId) => {
+    try {
+        const locate = doc(db, "BharatSeva_User", healthId)
+        await setDoc(locate, Default_Records)
+    } catch (err) {
+        console.log(err)
+    }
+}
+const CreateHealthCareInFirebase = async (healthcareId, name, about, appointment_fee) => {
+    try {
+        const locate = doc(db, "BharatSeva_HealthCare", healthcareId)
+        await setDoc(locate, { ...Default_HealthcareRecords, name, about, appointment_fee })
+    } catch (err) {
+        console.log(err)
+    }
+}
 
 
 
@@ -273,5 +323,9 @@ module.exports = {
     GetHealthUserSettingForServer,
     IncreaseRequestLimit,
     Healthcare_RecordsCreated_Stats,
-    HealthCare_RecordsViewed_Stats
+    HealthCare_RecordsViewed_Stats,
+    HealthCare_ViewBioDataStats,
+    AppointmentCounter,
+    CreateUserInFirebase,
+    CreateHealthCareInFirebase
 } 

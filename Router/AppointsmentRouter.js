@@ -2,13 +2,13 @@ const express = require("express")
 
 const {
     GetAppointment_User,
-    GetAppointment_HealthCare
+    CreateAppointment
 } = require("../Controllers/AppointmentController")
 
 const router = express.Router()
 
+router.post('/:healthcareID/createappointment', CreateAppointment)
 router.get('/appointment/:health_ID/', GetAppointment_User)
-router.get('/hip/appointment/:healthcareID/', GetAppointment_HealthCare)
 
 
 

@@ -2,71 +2,42 @@ const Jobs = require("../Schema/Patient_Info_Schema")
 const StatusCode = require("http-status-codes")
 const { GreetPatient } = require("../NodeMailer/NodeMessages")
 
+// From Firebase
+const { HealthCare_ViewBioDataStats, CreateUserInFirebase } = require("../Firebase/Service")
 
-
-const Get_allDetails = async (req, res) => {
-    const patient = await Jobs.find({ createdBy: req.user.userID }).sort('createdAt')
-    res.status(StatusCode.ACCEPTED).json({ patient, count: patient.length })
-}
-
-const Get_Adetails = async (req, res) => {
+// This Will Get User Bio Data For HealthCare ONly
+const Get_UserBioData = async (req, res) => {
     try {
-        const patientDetail = await Jobs.findOne({ health_id: req.params.id, createdBy: req.user.userID })
-        res.status(StatusCode.OK).json({ patientDetail })
+        const { health_id } = req.params
+        const User = await Jobs.findOne({ health_id }).select(["-_id", "-__v"])
+        if (!User) {
+            res.status(StatusCode.NOT_FOUND).json({ message: "No One With Given Health ID" })
+            return
+        }
+        const { name, healthcareId } = req.user
+        HealthCare_ViewBioDataStats(name, healthcareId.toString(), health_id.toString(), "ChangeLater")
+        res.status(StatusCode.ACCEPTED).json({ User })
     } catch (err) {
-        res.status(StatusCode.BAD_REQUEST).json({ message: err.messsage })
+        console.log(err.message)
+        res.status(StatusCode.BAD_REQUEST).json({ message: "Something Bad Happened!" })
     }
 }
+// From Firebase
 
-const CreateDetails = async (req, res) => {
+const CreateBioData = async (req, res) => {
     try {
-        req.body.createdBy = req.user.name
-        const patient = await Jobs.create(req.body)
-        // let meonly = await Jobs.deleteOne({health_id: req.body.health_id})
-        res.status(StatusCode.CREATED).json({ Status:"Success", message:"Record has been created Successfully" })
+        const { name, healthcareId } = req.user
+        await Jobs.create({ ...req.body, healthcareId, healthcareName: name })
+        res.status(StatusCode.CREATED).json({ message: "Successfully Created!" })
         GreetPatient(req.body.email, req.body.fname, req.user.name)
+        CreateUserInFirebase(req.body.health_id.toString())
     }
     catch (err) {
         res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
     }
 }
-
-const UpdateDetails = async (req, res) => {
-    try {
-        const patient = await Jobs.findOneAndUpdate({ health_id: req.params.id }, req.body, {
-            new: true, runValidators: true
-        })
-        if (!patient) {
-            res.status(StatusCode.NOT_FOUND).json({ message: `Detail Not Found with Health_ID ${req.params.id}` })
-            return;
-        }
-        res.status(StatusCode.OK).json({ patient })
-    } catch (err) {
-        res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
-    }
-}
-
-const deleteDetails = async (req, res) => {
-    try {
-        const { params: { id: health_id } } = req
-        const details = await Jobs.findOneAndDelete({ health_id: req.params.id }, req.body, {
-            new: true, runValidators: true
-        })
-        if (!details) {
-            res.status(StatusCode.NOT_FOUND).json({ message: "Details Not Found" })
-            return;
-        }
-        res.status(StatusCode.OK).json({ message: "Details Deleted" })
-    } catch (err) {
-        res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
-    }
-}
-
 module.exports = {
-    Get_allDetails,
-    Get_Adetails,
-    CreateDetails,
-    UpdateDetails,
-    deleteDetails
+    Get_UserBioData,
+    CreateBioData
 }
 

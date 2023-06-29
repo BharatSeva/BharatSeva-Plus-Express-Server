@@ -1,12 +1,10 @@
 const express = require("express");
-const { Get_allDetails, Get_Adetails, CreateDetails, UpdateDetails, deleteDetails } = require("../Controllers/HIP_Patient_Info");
-
+const { CreateBioData } = require("../Controllers/HIP_Patient_Info");
+// const {GetPatientBioData} = require
 const router = express.Router();
 
-
-router.route('/createpatientbiodata').get(Get_allDetails).post(CreateDetails)
-router.route('/:id').get(Get_Adetails).delete(UpdateDetails).patch(deleteDetails);
-
+// This Will Let To Create User Bio Data for healhCare Only
+router.route('/createuserBio').post(CreateBioData)
 
 
 

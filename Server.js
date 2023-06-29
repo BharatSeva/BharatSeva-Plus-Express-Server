@@ -31,11 +31,6 @@ app.use(express.json())
 // Connect to MongoDB
 const ConnectDB = require("./MongoDB/Database")
 
-// From FireBase Database 
-const FirebaseRouter = require("./Router/FirebaseRouter")
-
-
-
 
 // Patient Authorization Router Goes Here
 const PatientRouter_Authorization = require("./Router/Patient_Authorization_Router")
@@ -65,26 +60,13 @@ const HIP_Info = require("./Router/HIP_Info")
 const GET_Patient = require("./Router/HIP_Patient_Issues")
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
 
-app.use("/api/v1/healthcaredetails", authentication, HIP_Info, HIP_router, PatientBioData)
-app.use("/api/v1/healthcare",authentication, GET_Patient)
-// HIP Info Goes Here
+app.use("/api/v1/healthcaredetails", authentication, HIP_Info, HIP_router)
+app.use("/api/v1/healthcare", authentication, GET_Patient)
 
 
-// authentication middleware Goes here
-// This one to create a patient problem 
-// Create Patient Route Goes Here 
-
-
-
-// const { GreetPatient } = require("./NodeMailer/NodeMessages");
-// app.post("/sendmail", GreetPatient)
-
-// Firebase Goes Here
-app.use("/api/v1/healthcare", FirebaseRouter)
 
 
 const port = 5000;
-
 const start = async () => {
     try {
         await ConnectDB(process.env.MONGODB_URL);

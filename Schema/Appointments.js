@@ -28,9 +28,14 @@ const Appoinments = new mongoose.Schema({
         type: String,
         maxlength: 50
     },
-    healthcare_name:{
-        type:String,
-        required:[true, "HealthCare Name is Required"],
+    name: {
+        type: String,
+        required: [true, "HealthUser Name is Required"],
+        maxlength: 30
+    },
+    healthcare_name: {
+        type: String,
+        required: [true, "HealthCare Name is Required"],
         maxlength: 30
     }
 }, { timestamp: true })

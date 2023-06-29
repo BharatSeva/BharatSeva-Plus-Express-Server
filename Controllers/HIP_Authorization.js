@@ -1,28 +1,31 @@
-const User = require("../Schema/HIP_Credentials_Schema.js")
 const HealthCare = require("../Schema/HIP_Info_Schema")
 const StatusCode = require('http-status-codes')
 require('dotenv').config();
 
+// From Firebase
+const { CreateHealthCareInFirebase } = require("../Firebase/Service")
 
 
 const Register = async (req, res) => {
     try {
-        const { healthcareId, email } = req.body
-        const IsHealthCare = await HealthCare.findOne({ HealthCareID: healthcareId, email })
-        if (!IsHealthCare) {
-            res.status(StatusCode.NOT_FOUND).json({ status: "Not Found!", message: "No HealthCare Found With Given HealthCare ID" })
+        const { about, appointment_fee, healthcareName, healthcareId, state, country, city, landmark } = req.body
+        if (!about || !appointment_fee || !state || !country || !landmark || !city) {
+            res.status(StatusCode.BAD_REQUEST).json({ message: "Required parameters are missing!" });
             return
         }
-        await User.create({ ...req.body })
-        res.status(StatusCode.CREATED).json({ status: "Registered!" })
-    } catch (err) {
-        res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
+        let name = healthcareName, address = { state, country, city, landmark }
+        CreateHealthCareInFirebase(healthcareId.toString(), name, about, appointment_fee.toString())
+        await HealthCare.create({ ...req.body, address })
+        res.status(StatusCode.CREATED).json({ message: "Successfully Created" });
+    }
+    catch (err) {
+        res.status(StatusCode.BAD_REQUEST).json({ Messsage: err.message })
     }
 }
 const Login = async (req, res) => {
     try {
         const { password, healthcarelicense, healthcareId } = req.body;
-        const user = await User.findOne({ healthcareId, healthcarelicense })
+        const user = await HealthCare.findOne({ healthcareId, healthcarelicense })
         if (!user) {
             res.status(StatusCode.BAD_REQUEST).json({ message: "No HealthCare Exist With Given ID" })
             return;

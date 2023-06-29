@@ -2,17 +2,7 @@ const HIP_info = require("../Schema/HIP_Info_Schema")
 const statusCode = require("http-status-codes")
 const { DeleteHealthCareAccountmessage } = require("../NodeMailer/NodeMessages")
 
-const CreateDetails = async (req, res) => {
-    try {
-        const create = await HIP_info.create(req.body)
-        res.status(statusCode.CREATED).json({ message: "Successfully Created" });
-    }
-    catch (err) {
-        res.status(statusCode.BAD_REQUEST).json({ Messsage: err.message })
-    }
-}
-
-
+// Get HealthCare Details For HIP Bio Data
 const GetDetails = async (req, res) => {
     try {
         const { HealthCareID } = req.params;
@@ -28,6 +18,7 @@ const GetDetails = async (req, res) => {
     }
 }
 
+// From Firebase
 const { DeleteHealthCareAccountChangePreferance } = require("../Firebase/Service")
 const DeleteHealthCareAccount = async (req, res) => {
     try {
@@ -58,10 +49,33 @@ const updateDetails = async (req, res) => {
     }
 }
 
+
+// This One Is for Healthcare Appointment Section
+const appointment = require("../Schema/Appointments")
+const HealthcareAppointment = async (req, res) => {
+    try {
+        const { healthcareId } = req.user
+        const appoint = await appointment.find({ healthcareID: healthcareId }).select(["-_id", "-__v"]).sort("-appointment_date")
+        if (!appoint) {
+            res.status(statusCode.NOT_FOUND).json({ message: "No AnyAppointment Yet!" })
+            return
+        }
+        res.status(statusCode.OK).json({ appointments: appoint })
+    } catch (err) {
+        console.log(err.message)
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: "Something Unexpected Happened!" })
+    }
+
+}
+
+
+
+
+
 module.exports = {
-    CreateDetails,
     GetDetails,
     updateDetails,
-    DeleteHealthCareAccount
+    DeleteHealthCareAccount,
+    HealthcareAppointment
 }
 
