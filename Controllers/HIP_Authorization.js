@@ -3,7 +3,7 @@ const StatusCode = require('http-status-codes')
 require('dotenv').config();
 
 // From Firebase
-const { CreateHealthCareInFirebase } = require("../Firebase/Service")
+const { CreateHealthCareInFirebase, CheckHealthcareAccountAvailability } = require("../Firebase/Service")
 
 
 const Register = async (req, res) => {
@@ -14,7 +14,7 @@ const Register = async (req, res) => {
             return
         }
         let name = healthcareName, address = { state, country, city, landmark }
-        CreateHealthCareInFirebase(healthcareId.toString(), name, about, appointment_fee.toString())
+        CreateHealthCareInFirebase(healthcareId.toString(), name, about, appointment_fee.toString(), location = { state, country, city, landmark })
         await HealthCare.create({ ...req.body, address })
         res.status(StatusCode.CREATED).json({ message: "Successfully Created" });
     }
@@ -35,6 +35,12 @@ const Login = async (req, res) => {
         if (!Ispasswordcorrect) {
             res.status(StatusCode.UNAUTHORIZED).json({ message: "Incorrect Password" })
             return;
+        }
+
+        const Isok = await CheckHealthcareAccountAvailability(healthcareId.toString())
+        if (Isok.Acccount_Deletion) {
+            res.status(451).json({ status: "Account Deletion Scheduled", message: "Mail 21vaibhav11@gmail.com With HealthcareId to Remove Deletion Schedule!" })
+            return
         }
         const token = user.createJWT();
         res.status(StatusCode.OK).json({ name: user.healthcareName, token, healthcareId })

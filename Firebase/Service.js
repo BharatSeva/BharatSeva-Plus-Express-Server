@@ -215,6 +215,7 @@ const GetHealthUserSettingForServer = async (healthId) => {
     return datas
 }
 
+// HealthUSer Request LImit
 const IncreaseRequestLimit = async (healthId) => {
     const Increment = doc(db, "BharatSeva_User", healthId)
     await updateDoc(Increment, {
@@ -291,15 +292,29 @@ const CreateUserInFirebase = async (healthId) => {
         console.log(err)
     }
 }
-const CreateHealthCareInFirebase = async (healthcareId, name, about, appointment_fee) => {
+const CreateHealthCareInFirebase = async (healthcareId, name, about, appointment_fee, location) => {
     try {
         const locate = doc(db, "BharatSeva_HealthCare", healthcareId)
-        await setDoc(locate, { ...Default_HealthcareRecords, name, about, appointment_fee })
+        await setDoc(locate, { ...Default_HealthcareRecords, name, about, appointment_fee, location })
     } catch (err) {
         console.log(err)
     }
 }
 
+// HeathCare Request Limit
+const HealthcareRequestLimit = async (healthcareId) => {
+    const locate = doc(db, "BharatSeva_HealthCare", healthcareId)
+    await updateDoc(locate, {
+        Total_request: increment(-1)
+    })
+}
+
+// THis Will Fetch Healthcare Account Availablitiy
+const CheckHealthcareAccountAvailability = async (healthcareId) => {
+    const locate = doc(db, "BharatSeva_HealthCare", healthcareId)
+    const get = await getDoc(locate)
+    return get.data()
+}
 
 
 
@@ -327,5 +342,7 @@ module.exports = {
     HealthCare_ViewBioDataStats,
     AppointmentCounter,
     CreateUserInFirebase,
-    CreateHealthCareInFirebase
+    CreateHealthCareInFirebase,
+    CheckHealthcareAccountAvailability,
+    HealthcareRequestLimit
 } 

@@ -1,7 +1,9 @@
 const jwt = require('jsonwebtoken');
 const StatusCode = require("http-status-codes");
 require('dotenv').config();
-const HIPInfo = require("../Schema/HIP_Info_Schema")
+
+// From Firebase
+const { HealthcareRequestLimit, CheckHealthcareAccountAvailability } = require("../Firebase/Service")
 
 
 const authentication = async (req, res, next) => {
@@ -13,9 +15,17 @@ const authentication = async (req, res, next) => {
     }
     const token = authHeader.split(' ')[1];
 
+
     try {
         const payload = jwt.verify(token, process.env.JWT_SECRET_KEY)
         req.user = { userID: payload.ID, name: payload.name, healthcareId: payload.healthcareId, email: payload.email }
+        // Firebase Rate Limiter
+        const get = await CheckHealthcareAccountAvailability(req.user.healthcareId.toString())
+        if (get.Total_request == 0) {
+            res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Request Limit Reached!", message: "Your Request Limit Reached mail 21vaibhav11@gmail.com for More Details!" })
+            return
+        }
+        await HealthcareRequestLimit(req.user.healthcareId.toString())
         next();
     }
     catch (err) {
