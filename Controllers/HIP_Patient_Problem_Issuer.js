@@ -14,9 +14,9 @@ const Create_PatientProblem = async (req, res) => {
             res.status(StatusCode.BAD_REQUEST).json({ message: `No Patient Exist With ${health_id}` })
             return;
         }
-        const { name, healthcareId } = req.user
+        const { name, healthcareId, address } = req.user
         const info = await PatientProblem_Schema.create({ ...req.body, healthcareName: name })
-        Healthcare_RecordsCreated_Stats(name, healthcareId.toString(), health_id.toString(), "ChangeLater")
+        await Healthcare_RecordsCreated_Stats(name, healthcareId.toString(), health_id.toString(), address)
         res.status(StatusCode.CREATED).json({ message: "Successfully Created!" })
     }
     catch (err) {
@@ -30,11 +30,11 @@ const GetPatient_Records = async (req, res) => {
         const GET = await Patient_Info.findOne({ health_id: healthId })
         if (!GET) {
             res.status(StatusCode.NOT_FOUND).json({ status: "No One With Given HealthID" })
-            return 
+            return
         }
         const HealthUser = await PatientProblem_Schema.find({ health_id: healthId }).select(["-__v", "-_id"]).sort("-Created_At")
-        const { name, healthcareId } = req.user
-        HealthCare_RecordsViewed_Stats(name, healthcareId.toString(), healthId, "ChangeLater")
+        const { name, healthcareId, address } = req.user
+        HealthCare_RecordsViewed_Stats(name, healthcareId.toString(), healthId, address)
         res.status(StatusCode.OK).json({ HealthUser })
     } catch (err) {
         res.status(StatusCode.OK).json({ status: "Something Unexpected Happened" })

@@ -56,7 +56,7 @@ app.use("/api/v1/healthcareauth", Authorizationrouter)
 
 
 const authentication = require("./MiddleWare/HIP_Authentication");
-const HIP_Info = require("./Router/HIP_Info")
+const HIP_Info = require("./Router/HIP_Info") 
 const GET_Patient = require("./Router/HIP_Patient_Issues")
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
 

@@ -87,7 +87,7 @@ HIP_info_Schema.pre('save', async function (next) {
 })
 
 HIP_info_Schema.methods.createJWT = function () {
-    return jwt.sign({ ID: this._id, name: this.healthcareName, healthcareId: this.healthcareId, email: this.email }, process.env.JWT_SECRET_KEY, {
+    return jwt.sign({ ID: this._id, name: this.healthcareName, healthcareId: this.healthcareId, email: this.email, address: this.address }, process.env.JWT_SECRET_KEY, {
         expiresIn: process.env.JWT_LIFETIME,
     })
 }

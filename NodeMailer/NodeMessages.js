@@ -11,23 +11,27 @@ const LoginDetected = async (name, healthId, Ipaddress, email) => {
     SendMail(email, `Login Detected`, txt)
 }
 
-const UserRegister = async(name, healthId, email)=>{
+const UserRegister = async (name, healthId, email) => {
     const txt = `Welcome ${name} Health ID : ${healthId} to our Esteemed Platform. Bharat सेवा Welcomes You to our platform. We Have Successfully Registered
     You and We are Extremely Excited to cover a long Journey with you.`
     SendMail(email, `नमस्कार 🙏`, txt)
 }
 
-const AccountSuspended = async(name, email)=>{
+const AccountSuspended = async (name, email) => {
     const txt = `Dear ${name}, We Have Temporarily Suspended Your Account Because of Unusual Request We have Noticed!. Mail to 21vaibhav11@gmail.com For Continued Service`
     SendMail(email, `Account Suspended`, txt)
 }
 
 // This One Will Send Message To DeleteAccount
-const DeleteHealthCareAccountmessage = async(name, healthcareId, email)=>{
+const DeleteHealthCareAccountmessage = async (name, healthcareId, email) => {
     const txt = `Dear ${name} You Have requested To delete your Account With ID ${healthcareId}. Kindly Note That in 3-4 days your account will be removed. If you changed your mind and want to stop it then mail to 21vaibhav11@gmail.com to stop deletion!`
     SendMail(email, `Account Deletion`, txt)
 }
-
+// This One to Send Mail To Healthcare For AccounT Request Limit Reached
+const HealthcareRequestLimitmessage = async (name, healthcareId, email) => {
+    const txt = `Dear ${name} Your Account with HealthcareID ${healthcareId} has reached Request Limit. Mail 21vaibhav11@gmail.com to extend your Request Limit!`
+    SendMail(email, `Account Request Limit Reached`, txt)
+}
 
 
 
@@ -39,5 +43,6 @@ module.exports = {
     LoginDetected,
     UserRegister,
     AccountSuspended,
-    DeleteHealthCareAccountmessage
+    DeleteHealthCareAccountmessage,
+    HealthcareRequestLimitmessage
 }

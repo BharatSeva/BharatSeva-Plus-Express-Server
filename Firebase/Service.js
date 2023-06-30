@@ -228,9 +228,10 @@ const Healthcare_RecordsCreated_Stats = async (name, healthcareId, healthId, loc
     await updateDoc(Increment, {
         RecordsCreated: increment(1)
     })
+    let date = new Date()
     const create = collection(db, "BharatSeva_User", healthId, "Modified_By")
     await addDoc(create, {
-        name, location, healthcareId, Type: "Records"
+        name, location, healthcareId, Type: "Records", date
     })
     const Increments = doc(db, "BharatSeva_User", healthId)
     await updateDoc(Increments, {
@@ -242,10 +243,11 @@ const HealthCare_RecordsViewed_Stats = async (name, healthcareId, healthId, loca
     const Increment = doc(db, "BharatSeva_HealthCare", healthcareId)
     await updateDoc(Increment, {
         RecordsViewed: increment(1)
-    })
+    }) 
+    let date = new Date()
     const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
     await addDoc(create, {
-        name, location, healthcareId, Type: "Records"
+        name, location, healthcareId, Type: "Records", date
     })
     const IncrementUser = doc(db, "BharatSeva_User", healthId)
     await updateDoc(IncrementUser, {
@@ -259,7 +261,7 @@ const HealthCare_ViewBioDataStats = async (name, healthcareId, healthId, locatio
     await updateDoc(locate, {
         Biodata_Viewed: increment(1)
     })
-
+    let date = new Date()
     const Userlocate = doc(db, "BharatSeva_User", healthId)
     await updateDoc(Userlocate, {
         Profile_Viewed: increment(1)
@@ -267,7 +269,7 @@ const HealthCare_ViewBioDataStats = async (name, healthcareId, healthId, locatio
 
     const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
     await addDoc(create, {
-        name, location, healthcareId, Type: "BioData"
+        name, location, healthcareId, Type: "BioData", date
     })
 }
 

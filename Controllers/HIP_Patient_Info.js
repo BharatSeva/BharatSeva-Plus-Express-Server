@@ -14,8 +14,8 @@ const Get_UserBioData = async (req, res) => {
             res.status(StatusCode.NOT_FOUND).json({ message: "No One With Given Health ID" })
             return
         }
-        const { name, healthcareId } = req.user
-        HealthCare_ViewBioDataStats(name, healthcareId.toString(), health_id.toString(), "ChangeLater")
+        const { name, healthcareId, address } = req.user
+        HealthCare_ViewBioDataStats(name, healthcareId.toString(), health_id.toString(), address)
         res.status(StatusCode.ACCEPTED).json({ User })
     } catch (err) {
         console.log(err.message)
