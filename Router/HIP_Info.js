@@ -3,8 +3,8 @@ const express = require('express')
 const router = express.Router();
 
 const { GetDetails, updateDetails, DeleteHealthCareAccount, HealthcareAppointment } = require("../Controllers/HIP_Info")
-router.get("/get/:HealthCareID", GetDetails);
-router.patch('/patchdata/', updateDetails)
+router.get("/getdetails", GetDetails);
+router.patch('/patchdata', updateDetails)
 
 // Send DeleteHealthCare Account 
 router.route("/healthcare/deleteaccount").delete(DeleteHealthCareAccount)
@@ -18,6 +18,6 @@ router.get("/healthcare/appointment", HealthcareAppointment)
 // From Firebase
 const { GetAllData } = require("../Firebase/Service")
 
-router.get('/stats/:HealthCareID', GetAllData)
+router.get('/stats', GetAllData)
 
 module.exports = router

@@ -26,7 +26,7 @@ const Appoinments = new mongoose.Schema({
     },
     note: {
         type: String,
-        maxlength: 50
+        maxlength: 30
     },
     name: {
         type: String,

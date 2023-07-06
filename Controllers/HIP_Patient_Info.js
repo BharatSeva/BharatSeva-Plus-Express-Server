@@ -1,6 +1,6 @@
 const Jobs = require("../Schema/Patient_Info_Schema")
 const StatusCode = require("http-status-codes")
-const { GreetPatient } = require("../NodeMailer/NodeMessages")
+const { GreetPatient, HealthcareViewBioData } = require("../NodeMailer/NodeMessages")
 
 // From Firebase
 const { HealthCare_ViewBioDataStats, CreateUserInFirebase } = require("../Firebase/Service")
@@ -16,6 +16,7 @@ const Get_UserBioData = async (req, res) => {
         }
         const { name, healthcareId, address } = req.user
         HealthCare_ViewBioDataStats(name, healthcareId.toString(), health_id.toString(), address)
+        await HealthcareViewBioData(User.fname, healthcareId, name, User.email, req.ip)
         res.status(StatusCode.ACCEPTED).json({ User })
     } catch (err) {
         console.log(err.message)
@@ -29,8 +30,8 @@ const CreateBioData = async (req, res) => {
         const { name, healthcareId } = req.user
         await Jobs.create({ ...req.body, healthcareId, healthcareName: name })
         res.status(StatusCode.CREATED).json({ message: "Successfully Created!" })
-        GreetPatient(req.body.email, req.body.fname, req.user.name)
-        CreateUserInFirebase(req.body.health_id.toString())
+        await GreetPatient(req.body.email, req.body.fname, name)
+        CreateUserInFirebase(req.body.health_id.toString(), healthcareId.toString())
     }
     catch (err) {
         res.status(StatusCode.BAD_REQUEST).json({ message: err.message })

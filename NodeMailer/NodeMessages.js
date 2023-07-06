@@ -1,7 +1,7 @@
 const { SendMail } = require("./NodeMailer")
 
 const GreetPatient = (email, name, hospital) => {
-    const txt = `Hello ${name} Its Pleasure To onboard you on our platform. Your Data Has Been Created by ${hospital} to access and view your data you need to register yourself on our website.`
+    const txt = `Hello ${name} Its Pleasure To onboard you on our platform. Your Data Has Been Created by ${hospital} On ${new Date()}to access and view your data you need to register yourself on our website.`
     SendMail(email, `Welcome Mr.${name}`, txt)
 }
 
@@ -24,7 +24,7 @@ const AccountSuspended = async (name, email) => {
 
 // This One Will Send Message To DeleteAccount
 const DeleteHealthCareAccountmessage = async (name, healthcareId, email) => {
-    const txt = `Dear ${name} You Have requested To delete your Account With ID ${healthcareId}. Kindly Note That in 3-4 days your account will be removed. If you changed your mind and want to stop it then mail to 21vaibhav11@gmail.com to stop deletion!`
+    const txt = `Dear ${name} You Have requested To delete your HealthCare Account Held With ID ${healthcareId}. Kindly Note That Your Account Login Will Be Suspended and in Upcoming 3-4 days your account will be removed. If you changed your mind and want to stop it then mail to 21vaibhav11@gmail.com to stop deletion!`
     SendMail(email, `Account Deletion`, txt)
 }
 // This One to Send Mail To Healthcare For AccounT Request Limit Reached
@@ -33,6 +33,11 @@ const HealthcareRequestLimitmessage = async (name, healthcareId, email) => {
     SendMail(email, `Account Request Limit Reached`, txt)
 }
 
+// HealthCare View Your Bio Data
+const HealthcareViewBioData = async (name, healthcareId, Hname, email, IP) => {
+    const txt = `Dear ${name} Your Bio Details Has Been Viewed By Healthcare ${Hname} With ID ${healthcareId}  On Date: ${new Date()} IP Address: ${IP}`
+    SendMail(email, `Bio Details Viewed!`, txt)
+}
 
 
 
@@ -44,5 +49,6 @@ module.exports = {
     UserRegister,
     AccountSuspended,
     DeleteHealthCareAccountmessage,
-    HealthcareRequestLimitmessage
+    HealthcareRequestLimitmessage,
+    HealthcareViewBioData
 }

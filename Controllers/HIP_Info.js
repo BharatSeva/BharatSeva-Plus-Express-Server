@@ -5,8 +5,8 @@ const { DeleteHealthCareAccountmessage } = require("../NodeMailer/NodeMessages")
 // Get HealthCare Details For HIP Bio Data
 const GetDetails = async (req, res) => {
     try {
-        const { HealthCareID } = req.params;
-        const Find = await HIP_info.findOne({ HealthCareID }).select(['-__v', '-_id'])
+        const { healthcareId } = req.user;
+        const Find = await HIP_info.findOne({ healthcareId }).select(['-__v', '-_id', '-password'])
         if (!Find) {
             res.status(statusCode.NOT_FOUND).json({ message: "No HealthCare Found For Given ID" });
             return
@@ -19,7 +19,7 @@ const GetDetails = async (req, res) => {
 }
 
 // From Firebase
-const { DeleteHealthCareAccountChangePreferance } = require("../Firebase/Service")
+const { DeleteHealthCareAccountChangePreferance, HealthcareBrowserDataF } = require("../Firebase/Service")
 const DeleteHealthCareAccount = async (req, res) => {
     try {
         const { healthcareId, name, email } = req.user
@@ -71,11 +71,27 @@ const HealthcareAppointment = async (req, res) => {
 
 
 
+// This One For HealthCare Info
+const HealthcareBrowserData = async (req, res) => {
+    try {
+        const { healthcareId } = req.user
+        console.log(req.body)
+        let IP = req.ip
+        const data = { ...req.body, IP }
+        await HealthcareBrowserDataF(healthcareId.toString(), data)
+        res.status(200).json({ status: "Collected" })
+    } catch (err) {
+        console.log(err)
+    }
+}
+
+
 
 module.exports = {
     GetDetails,
     updateDetails,
     DeleteHealthCareAccount,
-    HealthcareAppointment
+    HealthcareAppointment,
+    HealthcareBrowserData
 }
 

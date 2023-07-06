@@ -57,8 +57,8 @@ const UpdateHealthCarePreferance = async (req, res) => {
 // This One Is For HealthCare Getting All The Data For User Search Apppointment
 const GetAllData = async (req, res) => {
     try {
-        const { HealthCareID } = req.params
-        const docRef = doc(db, "BharatSeva_HealthCare", HealthCareID);
+        const { healthcareId } = req.user
+        const docRef = doc(db, "BharatSeva_HealthCare", healthcareId.toString());
         let docSnap = await getDoc(docRef);
         if (!docSnap.exists()) {
             await setDoc(docRef, Default_HealthcareRecords)
@@ -243,7 +243,7 @@ const HealthCare_RecordsViewed_Stats = async (name, healthcareId, healthId, loca
     const Increment = doc(db, "BharatSeva_HealthCare", healthcareId)
     await updateDoc(Increment, {
         RecordsViewed: increment(1)
-    }) 
+    })
     let date = new Date()
     const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
     await addDoc(create, {
@@ -286,10 +286,14 @@ const AppointmentCounter = async (healthcareId, healthId) => {
 }
 
 // This Will Create User In Firebase To Log Stats
-const CreateUserInFirebase = async (healthId) => {
+const CreateUserInFirebase = async (healthId, healthcareId) => {
     try {
         const locate = doc(db, "BharatSeva_User", healthId)
         await setDoc(locate, Default_Records)
+        const location = doc(db, "BharatSeva_HealthCare", healthcareId)
+        await updateDoc(location, {
+            HealthID_Created: increment(1)
+        })
     } catch (err) {
         console.log(err)
     }
@@ -320,6 +324,17 @@ const CheckHealthcareAccountAvailability = async (healthcareId) => {
 
 
 
+// For HealthcareUserBrowserData
+const HealthcareBrowserDataF = async (healthcareId, Data) => {
+    let date = new Date()
+    const locate = doc(db, "BharatSeva_HealthCare", healthcareId, "DataCollected", date.toString())
+    await setDoc(locate, {
+        Data
+    })
+}
+
+
+
 module.exports = {
     UpdateHealthCarePreferance,
     GetAllData,
@@ -333,6 +348,9 @@ module.exports = {
     GetHealthCareForApp,
     GetHealthCarePreferance,
     DeleteHealthCareAccountChangePreferance,
+
+    // Data
+    HealthcareBrowserDataF,
 
 
 
