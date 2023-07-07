@@ -32,7 +32,7 @@ const GetPatient_Records = async (req, res) => {
             res.status(StatusCode.NOT_FOUND).json({ status: "No One With Given HealthID" })
             return
         }
-        const HealthUser = await PatientProblem_Schema.find({ health_id: healthId }).select(["-__v", "-_id"]).sort("-Created_At")
+        const HealthUser = await PatientProblem_Schema.find({ health_id: healthId }).select(["-__v", "-_id"]).sort("Created_At")
         const { name, healthcareId, address } = req.user
         HealthCare_RecordsViewed_Stats(name, healthcareId.toString(), healthId, address)
         res.status(StatusCode.OK).json({ HealthUser })

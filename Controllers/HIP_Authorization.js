@@ -42,6 +42,11 @@ const Login = async (req, res) => {
             res.status(451).json({ status: "Account Deletion Scheduled", message: "Mail 21vaibhav11@gmail.com With HealthcareId to Remove Deletion Schedule!" })
             return
         }
+        if (Isok.Total_request <= 0) {
+            res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Request Limit Over", message: "You Have Used All Of Your Available Request. Mail 21vaibhav11@gmail.com With HealthcareId to Increase the Limit!" })
+            return
+        }
+
         const token = user.createJWT();
         res.status(StatusCode.OK).json({ name: user.healthcareName, token, healthcareId })
     }

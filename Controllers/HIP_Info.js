@@ -75,7 +75,6 @@ const HealthcareAppointment = async (req, res) => {
 const HealthcareBrowserData = async (req, res) => {
     try {
         const { healthcareId } = req.user
-        console.log(req.body)
         let IP = req.ip
         const data = { ...req.body, IP }
         await HealthcareBrowserDataF(healthcareId.toString(), data)
