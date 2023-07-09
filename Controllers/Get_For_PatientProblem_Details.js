@@ -6,8 +6,8 @@ const Patient_problem_Schema = require("../Schema/Patient_problem_Schema")
 
 const Get_details = async (req, res) => {
     try {
-        const { id: health_id } = req.params
-        const records = await Patient_problem_Schema.find({ health_id }).select(["-__v", "-_id"]).sort("-Created_At")
+        const { healthId } = req.user
+        const records = await Patient_problem_Schema.find({ health_id: healthId }).select(["-__v", "-_id"]).sort("Created_At")
         res.status(StatusCode.OK).json({ records, records_length: records.length })
     }
     catch (err) {

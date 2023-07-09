@@ -8,7 +8,7 @@ const {
 const router = express.Router()
 
 router.post('/:healthcareID/createappointment', CreateAppointment)
-router.get('/appointment/:health_ID/', GetAppointment_User)
+router.get('/appointment', GetAppointment_User)
 
 
 

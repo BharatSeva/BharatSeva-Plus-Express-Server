@@ -17,9 +17,9 @@ const CreateAppointment = async (req, res) => {
 }
 
 const GetAppointment_User = async (req, res) => {
-    const { health_ID } = req.params
+    const { healthId } = req.user
     try {
-        const data = await Appointment.find({ health_ID }).select(['-__v', '-_id']).sort("-appointment_date")
+        const data = await Appointment.find({ health_ID: healthId }).select(['-__v', '-_id']).sort("-appointment_date")
         if (!data.length) {
             res.status(StatusCode.NOT_FOUND).json({ message: "No Any Appointment Log Found !" })
             return

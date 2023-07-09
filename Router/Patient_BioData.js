@@ -8,7 +8,7 @@ const { GetBioData } = require('../Controllers/GET_Patient_BIoData');
 
 
 
-router.route('/user/:health_id').get(GetBioData)
+router.route('/user').get(GetBioData)
 
 
 module.exports = router

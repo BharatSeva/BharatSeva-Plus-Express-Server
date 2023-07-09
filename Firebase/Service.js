@@ -85,12 +85,12 @@ const Default_Records = {
 }
 
 // This WIll Update the setting of the user
-const UpdateHealthUserSetting = async (req, res) => {
-    const { healthId } = req.params
+const UpdateHealthUserPreferances = async (req, res) => {
+    const { healthId } = req.user
     const { LockedAccount, View_permission, Email } = req.body
     try {
         if (LockedAccount || View_permission || Email) {
-            const NewData = doc(db, "BharatSeva_User", healthId)
+            const NewData = doc(db, "BharatSeva_User", healthId.toString())
             const docSnap = await getDoc(NewData);
             if (!docSnap.exists()) {
                 await setDoc(NewData, Default_Records)
@@ -106,7 +106,7 @@ const UpdateHealthUserSetting = async (req, res) => {
 }
 
 // GET HealthUSerActivityData
-const HealthUser_ActivityData = async (req, res) => {
+const accountactivitylog = async (req, res) => {
     const { healthId } = req.user
     let Modified_By = [], Viewed_By = []
     try {
@@ -121,13 +121,13 @@ const HealthUser_ActivityData = async (req, res) => {
         res.status(statusCode.OK).json({ Modified_By, Modified_Length: Modified_By.length, Viewed_By, Viewed_Length: Viewed_By.length })
     } catch (err) {
         console.log(err.message)
-        res.status(400).json({ status: "Failed", message: err.message })
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ status: "Failed", message: err.message })
     }
 }
 
 
 // Get HealthUser Data
-const GET_HealthUserSettings = async (req, res) => {
+const GetHealthUserStats = async (req, res) => {
     try {
         const { healthId } = req.user
         const Newdata = doc(db, "BharatSeva_User", healthId.toString())
@@ -136,10 +136,24 @@ const GET_HealthUserSettings = async (req, res) => {
             await setDoc(Newdata, Default_Records)
             docSnap = await getDoc(Newdata)
         }
-        res.status(200).json({ ...docSnap.data() })
+        const { account_status, Available_Money, Profile_Viewed, Profile_Updated, Records_Viewed, Records_Created } = docSnap.data()
+        res.status(200).json({ account_status, Available_Money, Profile_Viewed, Profile_Updated, Records_Viewed, Records_Created })
     } catch (err) {
         console.log(err.message)
-        res.status(statusCode.BAD_REQUEST).json({ status: "Not Allowed!" })
+        res.status(statusCode.INTERNAL_SERVER_ERROR).json({ status: "Not Allowed!" })
+    }
+}
+// Get User Preferances
+const GetHealthUserPreferances = async (req, res) => {
+    try {
+        const { healthId } = req.user
+        const Newdata = doc(db, "BharatSeva_User", healthId.toString())
+        let docSnap = await getDoc(Newdata)
+        const { View_permission, LockedAccount, Email } = docSnap.data()
+        res.status(200).json({ View_permission, LockedAccount, Email })
+    } catch (err) {
+        console.log(err)
+        res.status(statusCode.EXPECTATION_FAILED).json({ status: "Not Allowed!" })
     }
 }
 
@@ -228,7 +242,7 @@ const Healthcare_RecordsCreated_Stats = async (name, healthcareId, healthId, loc
     await updateDoc(Increment, {
         RecordsCreated: increment(1)
     })
-    let date = new Date()
+    let date = new Date().toString()
     const create = collection(db, "BharatSeva_User", healthId, "Modified_By")
     await addDoc(create, {
         name, location, healthcareId, Type: "Records", date
@@ -244,7 +258,7 @@ const HealthCare_RecordsViewed_Stats = async (name, healthcareId, healthId, loca
     await updateDoc(Increment, {
         RecordsViewed: increment(1)
     })
-    let date = new Date()
+    let date = new Date().toString()
     const create = collection(db, "BharatSeva_User", healthId, "Viewed_By")
     await addDoc(create, {
         name, location, healthcareId, Type: "Records", date
@@ -338,13 +352,14 @@ const HealthcareBrowserDataF = async (healthcareId, Data) => {
 module.exports = {
     UpdateHealthCarePreferance,
     GetAllData,
+    GetHealthUserPreferances,
 
 
     // Node Js
-    UpdateHealthUserSetting,
-    GET_HealthUserSettings,
+    UpdateHealthUserPreferances,
+    GetHealthUserStats,
     Get_HealthCare_Names,
-    HealthUser_ActivityData,
+    accountactivitylog,
     GetHealthCareForApp,
     GetHealthCarePreferance,
     DeleteHealthCareAccountChangePreferance,

@@ -16,11 +16,11 @@ const Patient_Authentication = async (req, res, next) => {
     const token = authHeader.split(' ')[1];
     try {
         const patient_payload = jwt.verify(token, process.env.Patient_JWT_SECRET_KEY)
-        req.user = { userID: patient_payload.Patient_USERID, name: patient_payload.name, healthId: patient_payload.healthId }
+        req.user = { userID: patient_payload.Patient_USERID, name: patient_payload.name, healthId: patient_payload.healthId, email: patient_payload.email }
         // This One For Rate Limit Checking
         let Count = await GetHealthUserSettingForServer(patient_payload.healthId.toString())
         if (!Count.Total_request) {
-            res.status(StatusCode.NOT_ACCEPTABLE).json({ status: "Account Suspended!", message: "Request Blocked Due to Request Limit Reached, Mail to 21vaibahv11@gmail.com to Continue Service!" })
+            res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Suspended!", message: "Request Blocked Due to Request Limit Reached, Mail to 21vaibahv11@gmail.com to Continue Service!" })
             return
         }
         if (Count.Total_request == 1) {

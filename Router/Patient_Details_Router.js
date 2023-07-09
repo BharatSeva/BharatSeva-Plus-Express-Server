@@ -3,12 +3,19 @@ const router = express.Router();
 
 const { Get_details } = require("../Controllers/Get_For_PatientProblem_Details");
 
-router.route('/records/:id').get(Get_details)
+router.route('/records').get(Get_details)
 
 // From Firebase
-const { HealthUser_ActivityData, GET_HealthUserSettings, UpdateHealthUserSetting } = require("../Firebase/Service")
+const { accountactivitylog, GetHealthUserStats, UpdateHealthUserPreferances, GetHealthUserPreferances } = require("../Firebase/Service")
 
-router.get('/userstats', HealthUser_ActivityData)
-router.get("/usertimesstats", GET_HealthUserSettings)
-router.post("/user/settings/:healthId", UpdateHealthUserSetting)
+// This Will Get HealthUser Preferances!
+router.get('/preferances', GetHealthUserPreferances)
+// This Will update User Preferances
+router.post("/preferances", UpdateHealthUserPreferances)
+
+
+
+
+router.get('/accountactivitylog', accountactivitylog)
+router.get("/stats", GetHealthUserStats)
 module.exports = router

@@ -34,7 +34,7 @@ const GetPatient_Records = async (req, res) => {
         }
         const HealthUser = await PatientProblem_Schema.find({ health_id: healthId }).select(["-__v", "-_id"]).sort("Created_At")
         const { name, healthcareId, address } = req.user
-        HealthCare_RecordsViewed_Stats(name, healthcareId.toString(), healthId, address)
+        await HealthCare_RecordsViewed_Stats(name, healthcareId.toString(), healthId, address)
         res.status(StatusCode.OK).json({ HealthUser })
     } catch (err) {
         res.status(StatusCode.OK).json({ status: "Something Unexpected Happened" })

@@ -44,7 +44,7 @@ const PatientDetails_Router = require("./Router/Patient_Details_Router");
 const Appointments = require("./Router/AppointsmentRouter")
 app.use('/api/v1/userdetails', Patient_Authentication, PatientDetails_Router, PatientBioData, Appointments)
 app.use('/api/v1/user', Patient_Authentication, Patient)
-
+ 
 
 
 
