@@ -3,7 +3,7 @@ const Patient_Credentials = require("../Schema/Patient_CredentialSchema")
 const Patient_Details = require("../Schema/Patient_Info_Schema")
 
 const { LoginDetected, UserRegister } = require("../NodeMailer/NodeMessages")
-const { GetHealthUserSettingForServer } = require("../Firebase/Service")
+const { GetHealthUserSettingForServer, HealthUserLoginData } = require("../Firebase/Service")
 
 
 const Patient_Register = async (req, res) => {
@@ -22,8 +22,8 @@ const Patient_Register = async (req, res) => {
         req.body.name = FindUser.fname + " " + FindUser.lname;
         if (FindUser.email === req.body.email) {
             await Patient_Credentials.create(req.body)
-            res.status(StatusCode.CREATED).json({ status: "Successfully Registered" })
-            // UserRegister(req.body.name, FindUser.health_id, FindUser.email)
+            res.status(StatusCode.CREATED).json({ status: "Successfully Registered, Now You Can Login..." })
+            UserRegister(req.body.name, FindUser.health_id, FindUser.email)
         } else {
             res.status(StatusCode.BAD_REQUEST).json({ status: "Email Mismatched", message: "Use the same email address that you provided for HealthCare registration" })
         }
@@ -43,7 +43,7 @@ const Patient_Login = async (req, res) => {
 
         const IsAccountSuspended = await GetHealthUserSettingForServer(health_id.toString())
         if (!IsAccountSuspended.Account_Connection || !IsAccountSuspended.Total_request) {
-            res.status(StatusCode.NOT_ACCEPTABLE).json({ status: "Account Suspended!", message: "Your Account Has been suspended due to Unusual Request We Received!, Please Mail to 21vaibhav11@gmail.com for Continued Service" })
+            res.status(StatusCode.NOT_ACCEPTABLE).json({ status: "Account Suspended!", message: "You Have Used all your 50 operations!, Please Mail to 21vaibhav11@gmail.com to extend the limit" })
             return
         }
 
@@ -53,12 +53,13 @@ const Patient_Login = async (req, res) => {
             return;
         }
         const token = Patient.P_createJWT();
+        await HealthUserLoginData(Patient.health_id, req.ip.toString())
         res.status(StatusCode.ACCEPTED).json({
             name: Patient.name,
             healthId: Patient.health_id,
             token
         })
-        // LoginDetected(Patient.name, Patient.health_id, req.ip, Patient.email)
+        LoginDetected(Patient.name, Patient.health_id, req.ip, Patient.email)
     }
     catch (err) {
         res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })

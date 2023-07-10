@@ -7,12 +7,12 @@ const HIP_info_Schema = new mongoose.Schema({
 
     healthcareId: {
         type: Number,
-        required: [true, "This Field is Must"],
+        required: [true, "Healthcare ID is Must"],
         unique: true
     },
     healthcarelicense: {
         type: String,
-        required: [true, "This is Field Cannot be Empty"],
+        required: [true, "Healthcare License Cannot be Empty"],
         maxlength: 20,
         minlength: 4,
         unique: true
@@ -26,45 +26,45 @@ const HIP_info_Schema = new mongoose.Schema({
     },
     email: {
         type: String,
-        required: [true, "This Field is Must"],
+        required: [true, "Email is Must"],
         match: [
             /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/, "Please Provide Valid E-Mail Address",
         ],
         unique: true,
     },
     address: {
-        country: { type: String, required: [true, "country is Required"], maxlength: 10 },
-        state: { type: String, required: [true, "State is Required"], maxlength: 15 },
-        city: { type: String, required: [true, "city is Required"], maxlength: 10 },
-        landmark: { type: String, required: [true, "landmark is Required"], maxlength: 15 },
+        country: { type: String, required: [true, "country is Required"], maxlength: 30 },
+        state: { type: String, required: [true, "State is Required"], maxlength: 20 },
+        city: { type: String, required: [true, "city is Required"], maxlength: 30 },
+        landmark: { type: String, required: [true, "landmark is Required"], maxlength: 45 },
     },
     availability: {
         type: String,
-        required: [true, "This Field is Must"],
+        required: [true, "Availability is Must"],
         minlength: 2,
         maxlength: 15
     },
     total_facilities: {
         type: Number,
-        required: [true, "This Field is Must"],
+        required: [true, "Total Facilites is Must"],
         minlength: 4,
         maxlength: 15
     },
     total_mbbs_doc: {
         type: Number,
-        required: [true, "This Field is Must"],
+        required: [true, "Total MBBS is Must"],
         minlength: 4,
         maxlength: 15
     },
     total_worker: {
         type: Number,
-        required: [true, "This Field is Must"],
+        required: [true, "Total Workers is Must"],
         minlength: 4,
         maxlength: 15
     },
     no_of_beds: {
         type: Number,
-        required: [true, "This Field is Must"],
+        required: [true, "No. Of beds is Must"],
         minlength: 4,
         maxlength: 15
     },

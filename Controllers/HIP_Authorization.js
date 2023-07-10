@@ -43,7 +43,7 @@ const Login = async (req, res) => {
             return
         }
         if (Isok.Total_request <= 0) {
-            res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Request Limit Over", message: "You Have Used All Of Your Available Request. Mail 21vaibhav11@gmail.com With HealthcareId to Increase the Limit!" })
+            res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Request Limit Over", message: "You Have Used All Of Your Request Quota. Mail 21vaibhav11@gmail.com With HealthcareId to Increase the Limit!" })
             return
         }
 

@@ -38,7 +38,7 @@ const JobsSchema = new mongoose.Schema({
     healthcareName: {
         type: String,
         required: [true, "Healthcare Name is Must"],
-        maxlength: [15, "Healthcare Name cannot be more than 10"],
+        maxlength: [30, "Healthcare Name cannot be more than 30 characters"],
         minlength: [1, "Healthcare Name cannot be less than 1"]
     },
     dob: {

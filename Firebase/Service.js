@@ -21,7 +21,7 @@ const Default_HealthcareRecords = {
     rating: 1 / 10,
     Acccount_Deletion: false,
     Total_appointments: 0,
-    Total_request: 20,
+    Total_request: 50,
     appointment_fee: 50
 }
 // This Will Update HealthCare Preferance
@@ -80,7 +80,7 @@ const Default_Records = {
     Available_Money: 500,
     account_status: "Trial",
     Account_Connection: true,
-    Total_request: 30,
+    Total_request: 50,
     Total_appointments: 0
 }
 
@@ -215,9 +215,13 @@ const DeleteHealthCareAccountChangePreferance = async (healthcareId) => {
     })
 }
 
-
-
-
+const HealthUserLoginData = async (healthId, IP) => {
+    let date = new Date()
+    const locate = doc(db, "BharatSeva_HealthCare", healthId.toString(), "LoginDate", date.toString())
+    await setDoc(locate, {
+        IP
+    })
+}
 
 // All the below Module are for Server Use Only !!!!
 
@@ -275,7 +279,7 @@ const HealthCare_ViewBioDataStats = async (name, healthcareId, healthId, locatio
     await updateDoc(locate, {
         Biodata_Viewed: increment(1)
     })
-    let date = new Date()
+    let date = new Date().toString()
     const Userlocate = doc(db, "BharatSeva_User", healthId)
     await updateDoc(Userlocate, {
         Profile_Viewed: increment(1)
@@ -366,6 +370,7 @@ module.exports = {
 
     // Data
     HealthcareBrowserDataF,
+    HealthUserLoginData,
 
 
 
