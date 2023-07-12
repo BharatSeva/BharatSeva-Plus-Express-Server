@@ -2,13 +2,13 @@
   "name": "BharatSeva_ResourceServer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
-    "start": "node server.js",
-    "dev": "nodemon server js"
+    "start": "node app.js",
+    "dev": "nodemon app js"
   },
   "author": "Vaibhav Yadav",
-  "license": "ISC",
+  "license": "MIT License",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
