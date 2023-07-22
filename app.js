@@ -6,6 +6,10 @@ require('dotenv').config();
 const helmet = require('helmet')
 const cors = require("cors")
 const xss = require("xss-clean")
+app.use((req, res, next) => {
+    res.header({ "Access-Control-Allow-Origin": "*" });
+    next();
+})
 
 // Flexible Rate Limiter!
 const { RateLimit } = require("./MiddleWare/RateLimiter")
