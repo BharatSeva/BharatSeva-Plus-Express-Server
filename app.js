@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express();
-require('dotenv').config(); 
+require('dotenv').config();
 
 // Extra Security packages goes here
 const helmet = require('helmet')
@@ -48,7 +48,7 @@ const PatientDetails_Router = require("./Router/Patient_Details_Router");
 const Appointments = require("./Router/AppointsmentRouter")
 app.use('/api/v1/userdetails', Patient_Authentication, PatientDetails_Router, PatientBioData, Appointments)
 app.use('/api/v1/user', Patient_Authentication, Patient)
- 
+
 
 
 
@@ -60,7 +60,7 @@ app.use("/api/v1/healthcareauth", Authorizationrouter)
 
 
 const authentication = require("./MiddleWare/HIP_Authentication");
-const HIP_Info = require("./Router/HIP_Info") 
+const HIP_Info = require("./Router/HIP_Info")
 const GET_Patient = require("./Router/HIP_Patient_Issues")
 const HIP_router = require("./Router/HIP_PatientDetails_Router");
 
@@ -70,11 +70,11 @@ app.use("/api/v1/healthcare", authentication, GET_Patient)
 
 
 
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 const start = async () => {
     try {
         await ConnectDB(process.env.MONGODB_URL);
-        app.listen(port, console.log(`Server is Listening to port ${port}.....`))
+        app.listen(PORT, console.log(`Server is Listening to PORT ${PORT}.....`))
     } catch (error) {
         console.log("Something Went Wrong, Message: ", error.message)
     }
