@@ -1,6 +1,6 @@
 const express = require("express")
 const app = express();
-require('dotenv').config();
+require('dotenv').config(); 
 
 // Extra Security packages goes here
 const helmet = require('helmet')
