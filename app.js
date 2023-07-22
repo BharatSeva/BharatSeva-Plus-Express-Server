@@ -21,11 +21,11 @@ const rateLimiter = require("express-rate-limit");
 // Security Goes Here
 
 app.set('trust proxy', 1);
-app.use(rateLimiter({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-})
-);
+// app.use(rateLimiter({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+// })
+// );
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
 app.use(cors())
 app.use(xss())
