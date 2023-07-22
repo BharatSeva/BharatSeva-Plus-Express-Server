@@ -19,7 +19,7 @@ const GetDetails = async (req, res) => {
 }
 
 // From Firebase
-const { DeleteHealthCareAccountChangePreferance, HealthcareBrowserDataF } = require("../Firebase/Service")
+const { DeleteHealthCareAccountChangePreferance } = require("../Firebase/Service")
 const DeleteHealthCareAccount = async (req, res) => {
     try {
         const { healthcareId, name, email } = req.user
@@ -69,28 +69,10 @@ const HealthcareAppointment = async (req, res) => {
 }
 
 
-
-
-// This One For HealthCare Info
-const HealthcareBrowserData = async (req, res) => {
-    try {
-        const { healthcareId } = req.user
-        let IP = req.ip
-        const data = { ...req.body, IP }
-        await HealthcareBrowserDataF(healthcareId.toString(), data)
-        res.status(200).json({ status: "Collected" })
-    } catch (err) {
-        console.log(err)
-    }
-}
-
-
-
 module.exports = {
     GetDetails,
     updateDetails,
     DeleteHealthCareAccount,
     HealthcareAppointment,
-    HealthcareBrowserData
 }
 

@@ -55,7 +55,7 @@ const UpdateHealthCarePreferance = async (req, res) => {
 }
 
 // This One Is For HealthCare Getting All The Data For User Search Apppointment
-const GetAllData = async (req, res) => {
+const GetStatsForHealthcare = async (req, res) => {
     try {
         const { healthcareId } = req.user
         const docRef = doc(db, "BharatSeva_HealthCare", healthcareId.toString());
@@ -64,7 +64,8 @@ const GetAllData = async (req, res) => {
             await setDoc(docRef, Default_HealthcareRecords)
             docSnap = await getDoc(docRef);
         }
-        res.status(200).json({ stats: docSnap.data() })
+        const { RecordsCreated, HealthID_Created, RecordsViewed, Biodata_Viewed, Total_request } = docSnap.data()
+        res.status(200).json({ stats: { RecordsCreated, HealthID_Created, RecordsViewed, Biodata_Viewed, Total_request } })
     } catch (err) {
         res.status(statusCode.INTERNAL_SERVER_ERROR).json({ message: err.message })
     }
@@ -342,12 +343,12 @@ const CheckHealthcareAccountAvailability = async (healthcareId) => {
 
 
 
-// For HealthcareUserBrowserData
+// For HealthcareUserBrowserData Login Info
 const HealthcareBrowserDataF = async (healthcareId, Data) => {
     let date = new Date()
-    const locate = doc(db, "BharatSeva_HealthCare", healthcareId, "DataCollected", date.toString())
+    const locate = doc(db, "BharatSeva_HealthCare", healthcareId.toString(), "DataCollected", date.toString())
     await setDoc(locate, {
-        Data
+        ...Data
     })
 }
 
@@ -355,7 +356,7 @@ const HealthcareBrowserDataF = async (healthcareId, Data) => {
 
 module.exports = {
     UpdateHealthCarePreferance,
-    GetAllData,
+    GetStatsForHealthcare,
     GetHealthUserPreferances,
 
 

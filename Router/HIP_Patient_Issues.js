@@ -10,5 +10,8 @@ router.route("/getpatientrecords").get(GetPatient_Records)
 router.route('/createpatientproblem').post(Create_PatientProblem)
 
 
+// This Module will help healthcare to find number of people in Particular states
+
+
 
 module.exports = router;

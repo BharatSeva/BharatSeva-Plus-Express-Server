@@ -1,6 +1,5 @@
 const express = require("express");
 const { CreateBioData } = require("../Controllers/HIP_Patient_Info");
-const { HealthcareBrowserData } = require("../Controllers/HIP_Info")
 const router = express.Router();
 
 // This Will Let To Create User Bio Data for healhCare Only
@@ -8,7 +7,6 @@ router.route('/createuserBio').post(CreateBioData)
 
 
 // This Will Collect Data From HealthCareUser Device
-router.post('/healthcare/data', HealthcareBrowserData)
 
 
 

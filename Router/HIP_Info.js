@@ -16,8 +16,8 @@ router.get("/healthcare/appointment", HealthcareAppointment)
 
 
 // From Firebase
-const { GetAllData } = require("../Firebase/Service")
+const { GetStatsForHealthcare } = require("../Firebase/Service")
 
-router.get('/stats', GetAllData)
+router.get('/stats', GetStatsForHealthcare)
 
 module.exports = router

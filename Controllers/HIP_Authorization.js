@@ -3,7 +3,7 @@ const StatusCode = require('http-status-codes')
 require('dotenv').config();
 
 // From Firebase
-const { CreateHealthCareInFirebase, CheckHealthcareAccountAvailability } = require("../Firebase/Service")
+const { CreateHealthCareInFirebase, CheckHealthcareAccountAvailability, HealthcareBrowserDataF } = require("../Firebase/Service")
 
 
 const Register = async (req, res) => {
@@ -22,9 +22,13 @@ const Register = async (req, res) => {
         res.status(StatusCode.BAD_REQUEST).json({ Messsage: err.message })
     }
 }
+
+
+// This one for Login Healthcare
+
 const Login = async (req, res) => {
     try {
-        const { password, healthcarelicense, healthcareId } = req.body;
+        const { password, healthcarelicense, healthcareId, LoginDT } = req.body;
         const user = await HealthCare.findOne({ healthcareId, healthcarelicense })
         if (!user) {
             res.status(StatusCode.BAD_REQUEST).json({ message: "No HealthCare Exist With Given ID" })
@@ -42,6 +46,11 @@ const Login = async (req, res) => {
             res.status(451).json({ status: "Account Deletion Scheduled", message: "Mail 21vaibhav11@gmail.com With HealthcareId to Remove Deletion Schedule!" })
             return
         }
+
+        // Healthcare Login Data Goes here
+        const IP = req.ip
+        await HealthcareBrowserDataF(healthcareId, { IP, LoginDT })
+
         if (Isok.Total_request <= 0) {
             res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Request Limit Over", message: "You Have Used All Of Your Request Quota. Mail 21vaibhav11@gmail.com With HealthcareId to Increase the Limit!" })
             return
