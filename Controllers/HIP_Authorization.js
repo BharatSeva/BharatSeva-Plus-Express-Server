@@ -55,8 +55,51 @@ const Login = async (req, res) => {
     }
 }
 
+// This One Is For Guest Login
+const GuestSchema = require("../Schema/GuestSchema")
+const GuestLogin = async (req, res) => {
+    try {
+        const { email, sub } = req.body
+        const IsUser = await HealthCare.findOne({ email })
+
+
+        if (IsUser) {
+            const Isok = await CheckHealthcareAccountAvailability(IsUser.healthcareId.toString())
+            if (Isok.Acccount_Deletion) {
+                res.status(451).json({ status: "Account Deletion Scheduled", message: "Mail 21vaibhav11@gmail.com With HealthcareId to Remove Deletion Schedule!" })
+                return
+            }
+            if (Isok.Total_request <= 0) {
+                res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Request Limit Over", message: "You Have Used All Of Your Request Quota. Mail 21vaibhav11@gmail.com With HealthcareId to Increase the Limit!" })
+                return
+            }
+            const token = IsUser.CreateHealthcare_GuestJWT()
+            res.status(StatusCode.OK).json({ status: "Registered User", token, healthcareId: IsUser.healthcareId, name: IsUser.healthcareName })
+            return
+        }
+        else {
+            const IsGuestUser = await GuestSchema.findOne({ email })
+            if (!IsGuestUser) { await GuestSchema.create({ ...req.body }) }
+            res.status(StatusCode.NOT_ACCEPTABLE).json({ message: "You Must be Registered to use Google Sign-In!" })
+        }
+    } catch (err) {
+        console.log(err.message)
+        res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ message: "Invalid Request" })
+    }
+
+}
+
+
+
+
+
+
+
+
+
 
 module.exports = {
     Register,
-    Login
+    Login,
+    GuestLogin
 }

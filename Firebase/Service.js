@@ -229,8 +229,11 @@ const HealthUserLoginData = async (healthId, IP) => {
 const GetHealthUserSettingForServer = async (healthId) => {
     const Newdata = doc(db, "BharatSeva_User", healthId)
     let docSnap = await getDoc(Newdata)
-    let datas = docSnap.data()
-    return datas
+    if (!docSnap.exists()) {
+        await setDoc(Newdata, Default_Records)
+        docSnap = await getDoc(Newdata)
+    }
+    return docSnap.data()
 }
 
 // HealthUSer Request LImit
@@ -336,8 +339,12 @@ const HealthcareRequestLimit = async (healthcareId) => {
 // THis Will Fetch Healthcare Account Availablitiy
 const CheckHealthcareAccountAvailability = async (healthcareId) => {
     const locate = doc(db, "BharatSeva_HealthCare", healthcareId)
-    const get = await getDoc(locate)
-    return get.data()
+    let docSnap = await getDoc(locate)
+    if (!docSnap.exists()) {
+        await setDoc(locate, Default_HealthcareRecords)
+        docSnap = await getDoc(locate)
+    }
+    return docSnap.data()
 }
 
 

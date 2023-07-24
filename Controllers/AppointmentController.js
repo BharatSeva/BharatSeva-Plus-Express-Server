@@ -13,6 +13,7 @@ const CreateAppointment = async (req, res) => {
         AppointmentCounter(healthcareID.toString(), healthId.toString())
     } catch (err) {
         res.status(StatusCode.BAD_REQUEST).json({ message: err.message })
+        console.log(err)
     }
 }
 

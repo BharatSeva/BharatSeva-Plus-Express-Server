@@ -5,7 +5,7 @@ const JobsSchema = new mongoose.Schema({
         type: String,
         required: [true, "This field is must"],
         minlength: [10, "This field can not be less than 10 characters"],
-        maxlength: [10, "This field can not be more than 10 characters"],
+        maxlength: [40, "This field can not be more than 10 characters"],
         unique: true
     },
     fname: {

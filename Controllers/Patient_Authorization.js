@@ -67,8 +67,72 @@ const Patient_Login = async (req, res) => {
 }
 
 
+// Checking Your User For Auth
+const GuestSchema = require("../Schema/GuestSchema")
+const Patient_GoogleOAuth = async (req, res) => {
+    try {
+        const { email, sub, name, family_name } = req.body
+        const IsUser = await Patient_Credentials.findOne({ email })
+        const IsGuestUser = await GuestSchema.findOne({ email })
+        if (IsUser) {
+            const IsAccountSuspended = await GetHealthUserSettingForServer(IsUser.health_id.toString())
+            if (!IsAccountSuspended.Account_Connection || !IsAccountSuspended.Total_request) {
+                res.status(StatusCode.NOT_ACCEPTABLE).json({ status: "Account Suspended!", message: "You Have Used all your 50 operations!, Please Mail to 21vaibhav11@gmail.com to extend the limit" })
+                return
+            }
+            const token = IsUser.P_createJWT()
+            res.status(200).json({ status: "Verified User", token, name: IsUser.name, healthId: IsUser.health_id })
+            return
+        }
+        else if (IsGuestUser) {
+            const IsAccountSuspended = await GetHealthUserSettingForServer(sub.toString())
+            if (!IsAccountSuspended.Account_Connection || !IsAccountSuspended.Total_request) {
+                res.status(StatusCode.NOT_ACCEPTABLE).json({ status: "Account Suspended!", message: "You Have Used all your 50 operations!, Please Mail to 21vaibhav11@gmail.com to extend the limit" })
+                return
+            }
+            const token = IsGuestUser.CreateHealthUserGuestJWT()
+            res.status(StatusCode.OK).json({ status: "Verified Guest User", token, healthId: IsGuestUser.sub, name: IsGuestUser.name })
+            return
+        } else {
+            // This Will create schema for Guest User
+            const GuestUser_DefaultSchema = {
+                "health_id": sub,
+                "fname": name.split(" ")[0],
+                "middlename": "-/-",
+                "lname": name.split(" ")[1],
+                "sex": "M/F",
+                "dob": "Your DOB",
+                healthcareName: "Vaibhav Hospital",
+                healthcareId: 2021071042,
+                "bloodgrp": "Your Blood Group",
+                "BMI": "Your BMI",
+                "MarriageStatus": "Status",
+                "Weight": "Weight",
+                "email": email,
+                "mobilenumber": "YourMobile",
+                "aadharNumber": "Your Aadhar",
+                "Primarylocation": "Guest Location",
+                "sibling": "Yes/No",
+                "twin": "Your twin",
+                "fathername": "Pappa",
+                "mothername": "Mummy",
+                "emergencynumber": "Number"
+
+            }
+            const NewGuestUser = await Patient_Details.create(GuestUser_DefaultSchema)
+            const NewUser = await GuestSchema.create({ ...req.body })
+            const token = NewUser.CreateHealthUserGuestJWT()
+            res.status(StatusCode.CREATED).json({ status: "Guest User", token, healthId: NewUser.sub, name: NewUser.name })
+        }
+    } catch (err) {
+        res.status(StatusCode.INTERNAL_SERVER_ERROR).json({ status: "Invalid Request", message: err.message })
+        console.log(err)
+
+    }
+}
 
 module.exports = {
     Patient_Register,
-    Patient_Login
+    Patient_Login,
+    Patient_GoogleOAuth
 }

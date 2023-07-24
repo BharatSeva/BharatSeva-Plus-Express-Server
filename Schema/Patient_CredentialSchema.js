@@ -39,7 +39,7 @@ PatientCredentials_Schema.pre('save', async function (next) {
 })
 
 PatientCredentials_Schema.methods.P_createJWT = function () {
-    return jwt.sign({ Patient_USERID: this._id, name: this.name, healthId: this.health_id, email: this.email }, process.env.Patient_JWT_SECRET_KEY, {
+    return jwt.sign({ ID: this._id, name: this.name, healthId: this.health_id, email: this.email }, process.env.Patient_JWT_SECRET_KEY, {
         expiresIn: process.env.Patient_JWT_LIFETIME,
     })
 }
