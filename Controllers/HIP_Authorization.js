@@ -73,7 +73,7 @@ const GuestLogin = async (req, res) => {
                 res.status(StatusCode.METHOD_NOT_ALLOWED).json({ status: "Account Request Limit Over", message: "You Have Used All Of Your Request Quota. Mail 21vaibhav11@gmail.com With HealthcareId to Increase the Limit!" })
                 return
             }
-            const token = IsUser.CreateHealthcare_GuestJWT()
+            const token = IsUser.createJWT()
             res.status(StatusCode.OK).json({ status: "Registered User", token, healthcareId: IsUser.healthcareId, name: IsUser.healthcareName })
             return
         }
