@@ -42,7 +42,7 @@ const HealthcareViewBioData = async (name, healthcareId, Hname, email, IP) => {
 
 // This will tell me when User Sign Up or Sign Using Google OAuth in User Interface
 const UserOAuthSign = async (IP, { email, sub, name, family_name, picture }, status) => {
-    const txt = `Hey, A User Just ${status} Using Your Google OAuth In User Interface Data: ${email, sub, name, family_name, picture} and IP : ${IP}`
+    const txt = `Hey, A User Just ${status} Using Your Google OAuth In User Interface Data: Full-Name: ${name} ID:-${sub} Family_name: ${family_name} DP Address:-${email} ${picture} and IP : ${IP}`
     SendMail("tron21vaibhav@gmail.com", "User Activity Detected!", txt)
 }
 

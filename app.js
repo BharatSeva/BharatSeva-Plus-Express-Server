@@ -57,14 +57,6 @@ const HIP_router = require("./Router/HIP_PatientDetails_Router");
 app.use("/api/v1/healthcaredetails", authentication, HIP_Info, HIP_router)
 app.use("/api/v1/healthcare", authentication, GET_Patient)
 
-
-const { UserOAuthSign } = require("./NodeMailer/NodeMessages")
-app.post('/', (req, res) => {
-    UserOAuthSign(req.ip, req.body, "New User")
-    res.status(200).json({ status: "OK" })
-})
-
-
 const PORT = process.env.PORT || 5000;
 const start = async () => {
     try {
