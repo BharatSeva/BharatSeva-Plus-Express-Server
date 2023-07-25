@@ -2,7 +2,7 @@ const StatusCode = require("http-status-codes")
 const Patient_Credentials = require("../Schema/Patient_CredentialSchema")
 const Patient_Details = require("../Schema/Patient_Info_Schema")
 
-const { LoginDetected, UserRegister } = require("../NodeMailer/NodeMessages")
+const { LoginDetected, UserRegister, UserOAuthSign } = require("../NodeMailer/NodeMessages")
 const { GetHealthUserSettingForServer, HealthUserLoginData } = require("../Firebase/Service")
 
 
@@ -81,6 +81,7 @@ const Patient_GoogleOAuth = async (req, res) => {
                 return
             }
             const token = IsUser.P_createJWT()
+            await UserOAuthSign(req.ip, req.body, "Verified User Signed In")
             res.status(200).json({ status: "Verified User", token, name: IsUser.name, healthId: IsUser.health_id })
             return
         }
@@ -91,6 +92,7 @@ const Patient_GoogleOAuth = async (req, res) => {
                 return
             }
             const token = IsGuestUser.CreateHealthUserGuestJWT()
+            await UserOAuthSign(req.ip, req.body, "User Signed In")
             res.status(StatusCode.OK).json({ status: "Verified Guest User", token, healthId: IsGuestUser.sub, name: IsGuestUser.name })
             return
         } else {
@@ -122,6 +124,7 @@ const Patient_GoogleOAuth = async (req, res) => {
             const NewGuestUser = await Patient_Details.create(GuestUser_DefaultSchema)
             const NewUser = await GuestSchema.create({ ...req.body })
             const token = NewUser.CreateHealthUserGuestJWT()
+            await UserOAuthSign(req.ip, req.body, "New User")
             res.status(StatusCode.CREATED).json({ status: "Guest User", token, healthId: NewUser.sub, name: NewUser.name })
         }
     } catch (err) {
