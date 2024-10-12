@@ -1,4 +1,3 @@
-require('punycode/');
 const express = require("express")
 const app = express();
 require('dotenv').config(); 
@@ -73,11 +72,11 @@ app.use("/api/v1/healthcare", authentication, GET_Patient)
 
 // Connect to MongoDB
 const ConnectDB = require("./MongoDB/Database")
-const port = 5000;
+const PORT = process.env.PORT || 5000;
 const start = async () => {
     try {
         await ConnectDB(process.env.MONGODB_URL);
-        app.listen(port, console.log(`Server is Listening to port ${port}.....`))
+        app.listen(PORT, console.log(`Server is Listening to port ${PORT}.....`))
     } catch (error) {
         console.log("Something Went Wrong, Message: ", error.message)
     }

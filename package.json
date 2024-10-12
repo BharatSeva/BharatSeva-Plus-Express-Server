@@ -2,7 +2,7 @@
   "name": "BharatSeva_ResourceServer",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "Server.js",
   "scripts": {
     "start": "nodemon server.js",
     "dev": "nodemon server js"
