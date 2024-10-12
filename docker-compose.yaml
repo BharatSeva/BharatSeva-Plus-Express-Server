@@ -15,6 +15,14 @@ services:
       - SENDERPASSWORD=SENDERPASSWORD
       - JWT_LIFETIME=30d
       - Patient_JWT_LIFETIME=30d
+      
+      - apiKey=<apiKey>
+      - authDomain=<authDomain>
+      - projectId=<projectId>
+      - storageBucket=<storageBucket>
+      - messagingSenderId=<messagingSenderId>
+      - appId=<appId>
+      - measurementId=<measurementId>
     depends_on:
       - mongodb
 

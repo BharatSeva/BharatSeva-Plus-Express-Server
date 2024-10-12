@@ -100,7 +100,8 @@ Welcome to the Express server for **Bharat Seva+**, a MERN + Firebase project de
 2. Install dependencies:
   - npm i
   - Setup following env variable
-   ```MONGODB_URL=<your-cluster-url-goes-here>
+   ```
+      MONGODB_URL=<your-cluster-url-goes-here>
       JWT_SECRET_KEY=JWT_SECRET_KEY
       Patient_JWT_SECRET_KEY=30d
       SENDEREMAIL=SENDEREMAIL

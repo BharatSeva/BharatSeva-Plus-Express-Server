@@ -1,16 +1,16 @@
 const { initializeApp } = require("firebase/app")
 const { getFirestore } = require("firebase/firestore")
+require('dotenv').config();
 
 const firebaseConfig = {
-
   // Put your Firebase Keys Here....
-  apiKey: "AIzaSyCWKQhia0I9td5n9p74cXeNpymR-z4LAsc",
-  authDomain: "bharat-seva-1297a.firebaseapp.com",
-  projectId: "bharat-seva-1297a",
-  storageBucket: "bharat-seva-1297a.appspot.com",
-  messagingSenderId: "1059569736175",
-  appId: "1:1059569736175:web:333ebb9c3a433f33f1fe1a",
-  measurementId: "G-FSS43S7B6K"
+  apiKey: process.env.apiKey,
+  authDomain: process.env.authDomain,
+  projectId: process.env.projectId,
+  storageBucket: process.env.storageBucket,
+  messagingSenderId: process.env.messagingSenderId,
+  appId: process.env.appId,
+  measurementId: process.env.measurementId
 };
 
 const app = initializeApp(firebaseConfig)
