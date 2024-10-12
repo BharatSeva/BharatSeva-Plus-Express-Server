@@ -1,0 +1,558 @@
+{
+	"info": {
+		"_postman_id": "1c492270-de2a-44bb-b9d1-e31f82829340",
+		"name": "Bharat Seva",
+		"description": "Bharat Seva REST APIs",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24259607"
+	},
+	"item": [
+		{
+			"name": "Register HealthCare",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OWRiYmQzZmY3NzNkODY2MjQ4NzI5NyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoY2FyZUlkIjoyMDIxMDcxMDQyLCJlbWFpbCI6IjIxc2h1YmhhbTExQGdtYWlsLmNvbSIsImlhdCI6MTY4ODA1ODg4MSwiZXhwIjoxNjkwNjUwODgxfQ.xteGgsXy4mcoxYzo3aXwyiK4wELzz47Zys6lY1DCwnM"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "health_id",
+						"value": "2021071042",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"healthcareName\": \"Anurag Singh\",\r\n    \"availability\": \"Yes\",\r\n    \"total_facilities\": 200,\r\n    \"state\": \"UP\",\r\n    \"country\": \"India\",\r\n    \"landmark\": \"DurgaKund Road\",\r\n    \"city\": \"Varanashi\",\r\n    \"total_mbbs_doc\": 58,\r\n    \"total_worker\": \"400\",\r\n    \"no_of_beds\": 200,\r\n    \"healthcareId\": 2021071110,\r\n    \"healthcarelicense\": \"2021071110\",\r\n    \"email\": \"tron21vaibhav@gmail.com\",\r\n    \"appointment_fee\": 300,\r\n    \"about\": \"I'm Anurag Hospital -- Made By Vaibhav Yadav\",\r\n    \"password\": \"00000\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{AWS_URL}}/api/v1/healthcareauth/register",
+					"host": [
+						"{{AWS_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"healthcareauth",
+						"register"
+					],
+					"query": [
+						{
+							"key": "Health_Id",
+							"value": "2021071042",
+							"disabled": true
+						}
+					]
+				},
+				"description": "**With This Endpoint You Can Be Registered As A Healthcare.**"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User BioDetails (User)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODg3NTgxNTQsImV4cCI6MTY5MTM1MDE1NH0.hz_TjP3aj9e99ZbIIxDkSe4xuNPDQ1TNBjYHFUix2kc"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaWF0IjoxNjg2NjUxMjE5LCJleHAiOjE2ODkyNDMyMTl9.GD8hX7KChYMkYMf6WvrELk9I1V6MMqYto7N3WkthNOQ",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "{{AWS_URL}}/api/v1/userdetails/user"
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"health_id\":2021051167,\r\n    \"email\":\"21shubham1qq1@gmail.com\",\r\n    \"password\":12345\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/userauth/userregister"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Records (HealthCare)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0YWVmMzQyZWE1MzVhZDc0NzRmODY2MSIsIm5hbWUiOiJWYWliaGF2IEhvc3BpdGFsIiwiaGVhbHRoY2FyZUlkIjoyMDIxMDcxMDQyLCJlbWFpbCI6InRyb24yMXZhaWJoYXZAZ21haWwuY29tIiwiYWRkcmVzcyI6eyJjb3VudHJ5IjoiSW5kaWEiLCJzdGF0ZSI6IlVQIiwiY2l0eSI6IkphdW5wdXIiLCJsYW5kbWFyayI6Ik5lYXIgRE0gUmVzaWRlbmNlIn0sImlhdCI6MTY4OTQzOTg3MSwiZXhwIjoxNjkyMDMxODcxfQ.a6qMaHHa8N0WQFkOY42z4cMPsNqpZw-AAebq1DiVbj8"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaWF0IjoxNjc5NjY1MTg5LCJleHAiOjE2ODIyNTcxODl9.sxlAXzFx74BQX7hlxvW1sZF7dWV3kW0N67ZAztxSJ50",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "{{AWS_URL}}/api/v1/healthcare/getpatientrecords?healthId=2021071042",
+					"host": [
+						"{{AWS_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"healthcare",
+						"getpatientrecords"
+					],
+					"query": [
+						{
+							"key": "healthId",
+							"value": "2021071042"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Login User",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"health_id\":2021071042,\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/userauth/userlogin"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Records",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OWRlMDRhMmNlOGI4NTUwMTVkMDBiMiIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJhZGRyZXNzIjp7ImNvdW50cnkiOiJJbmRpYSIsInN0YXRlIjoiVVAiLCJjaXR5IjoiVmFyYW5hc2hpIiwibGFuZG1hcmsiOiJEdXJnYUt1bmQgUm9hZCJ9LCJpYXQiOjE2ODgwOTk3MzEsImV4cCI6MTY5MDY5MTczMX0.noXjz80zUzPMTJZOF-k59-Yk3WJE5JNbVw3gylCn9aM"
+					}
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDEzNjA5MTBlNWMzYzE0MzJhYjhiYTkiLCJuYW1lIjoiVmFpYmhhdiBZYWRhdiIsImlhdCI6MTY3OTc0NTEzNiwiZXhwIjoxNjgyMzM3MTM2fQ.LHnas5hnNk816s-7cK86GWg2iCeUjHQ6FEgZzQ08dFY",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"p_problem\":\"This WOne is From me\",\r\n    \"description\":\"Mild Fever, loose Motion and Vomiting\",\r\n    \"health_id\":2021071042,\r\n    \"medical_severity\":\"Semi-mid\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/healthcare/createpatientproblem"
+			},
+			"response": []
+		},
+		{
+			"name": "Update Patient",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDEzNjA5MTBlNWMzYzE0MzJhYjhiYTkiLCJuYW1lIjoiVmFpYmhhdiBZYWRhdiIsImlhdCI6MTY3OTA2OTk2NywiZXhwIjoxNjc5MTU2MzY3fQ.r9FS17IoT5gLOS8J2FxvCx9v7FlheBD2GO5ExXMtmbM",
+						"type": "text"
+					}
+				],
+				"url": "{{AWS_URL}}/hip/UpdatePatient/2021071042"
+			},
+			"response": []
+		},
+		{
+			"name": "Get HealthCareInfo",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OWRlMDRhMmNlOGI4NTUwMTVkMDBiMiIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJhZGRyZXNzIjp7ImNvdW50cnkiOiJJbmRpYSIsInN0YXRlIjoiVVAiLCJjaXR5IjoiVmFyYW5hc2hpIiwibGFuZG1hcmsiOiJEdXJnYUt1bmQgUm9hZCJ9LCJpYXQiOjE2ODg1MzM1NzAsImV4cCI6MTY5MTEyNTU3MH0.Pfd1u1nIYt0KHJjI-EL9u-AfpLLT7-6HHQM-AzuD_co"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/getdetails"
+			},
+			"response": []
+		},
+		{
+			"name": "Get_HealthCareNames",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc3MTMyNjQsImV4cCI6MTY5MDMwNTI2NH0.emsVx26UCQjgozZ3il0yNTjRSSs83LkxyMN0rm1zRc8"
+					}
+				},
+				"method": "GET",
+				"header": [
+					{
+						"key": "id",
+						"value": "2021071042",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"url": "{{AWS_URL}}/api/v1/user/gethealthcarename"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Appointment For User",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODg3NTgxNTQsImV4cCI6MTY5MTM1MDE1NH0.hz_TjP3aj9e99ZbIIxDkSe4xuNPDQ1TNBjYHFUix2kc"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/userdetails/appointment"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Records (User)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODg3NTgxNTQsImV4cCI6MTY5MTM1MDE1NH0.hz_TjP3aj9e99ZbIIxDkSe4xuNPDQ1TNBjYHFUix2kc"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/userdetails/records"
+			},
+			"response": []
+		},
+		{
+			"name": "Get HealthCare For User Appointment",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc3MTMyNjQsImV4cCI6MTY5MDMwNTI2NH0.emsVx26UCQjgozZ3il0yNTjRSSs83LkxyMN0rm1zRc8"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/api/v1/user/gethealthcare/2021071110"
+			},
+			"response": []
+		},
+		{
+			"name": "Create A User Appointment",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODg3NTgxNTQsImV4cCI6MTY5MTM1MDE1NH0.hz_TjP3aj9e99ZbIIxDkSe4xuNPDQ1TNBjYHFUix2kc"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"healthcare_name\": \"Vaibhav Hospitals\",\r\n    \"appointment_date\":\"30-02-2023\",\r\n    \"note\":\"Just You And Me\",\r\n    \"appointment_time\":\"10:00 AM T0 12:00 PM\",\r\n    \"department\":\"Psycology\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{AWS_URL}}/api/v1/userdetails/:healthcare/createappointment",
+					"host": [
+						"{{AWS_URL}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"userdetails",
+						":healthcare",
+						"createappointment"
+					],
+					"variable": [
+						{
+							"key": "healthcare",
+							"value": "2021071042"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Account Activity Stats",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc3MDkxMjgsImV4cCI6MTY5MDMwMTEyOH0.9a9XZelE1cQhfAN_Nbvp2R0izYdY7PscznKTgBe0goI"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/userdetails/accountactivitylog"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Account Stats",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc3MDkxMjgsImV4cCI6MTY5MDMwMTEyOH0.9a9XZelE1cQhfAN_Nbvp2R0izYdY7PscznKTgBe0goI"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/userdetails/stats"
+			},
+			"response": []
+		},
+		{
+			"name": "Change Health User Preferances",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODg3NTgxNTQsImV4cCI6MTY5MTM1MDE1NH0.hz_TjP3aj9e99ZbIIxDkSe4xuNPDQ1TNBjYHFUix2kc"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"LockedAccount\":\"Ayush Not Allowed\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/api/v1/userdetails/preferances"
+			},
+			"response": []
+		},
+		{
+			"name": "Get HealthCare Details Stats",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OWRlMDRhMmNlOGI4NTUwMTVkMDBiMiIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJhZGRyZXNzIjp7ImNvdW50cnkiOiJJbmRpYSIsInN0YXRlIjoiVVAiLCJjaXR5IjoiVmFyYW5hc2hpIiwibGFuZG1hcmsiOiJEdXJnYUt1bmQgUm9hZCJ9LCJpYXQiOjE2ODg1MzM1NzAsImV4cCI6MTY5MTEyNTU3MH0.Pfd1u1nIYt0KHJjI-EL9u-AfpLLT7-6HHQM-AzuD_co"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/stats"
+			},
+			"response": []
+		},
+		{
+			"name": "Change HealthCare Preferances",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OTlkZWVhMWU0NjQzYzA2N2JlNWU5NSIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc4ODkzMzksImV4cCI6MTY5MDQ4MTMzOX0.2KgWVlc2I4_rxgn6p0OO74whSk45tuwvu-ZrC4sYu7Q"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\":\"asdf\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/healthcare/changepreferance"
+			},
+			"response": []
+		},
+		{
+			"name": "Get HealthCare Preferances",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OTlkZWVhMWU0NjQzYzA2N2JlNWU5NSIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc5MzY2ODgsImV4cCI6MTY5MDUyODY4OH0.GMX81fKdDV-DO6ue6xGrlUIHi_mHzzVy4eOtysiD1lk"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/healthcare/getpreferance"
+			},
+			"response": []
+		},
+		{
+			"name": "Delete HealthCare Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OTlkZWVhMWU0NjQzYzA2N2JlNWU5NSIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc5MzY2ODgsImV4cCI6MTY5MDUyODY4OH0.GMX81fKdDV-DO6ue6xGrlUIHi_mHzzVy4eOtysiD1lk"
+					}
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/healthcare/deleteaccount"
+			},
+			"response": []
+		},
+		{
+			"name": "Get User Bio Data (HealthCare)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0YWJkMWMxZTgwYmVjMjQ5ZjJkYTM4NCIsIm5hbWUiOiJWYWliaGF2IEhvc3BpdGFsIiwiaGVhbHRoY2FyZUlkIjoyMDIxMDcxMDQyLCJlbWFpbCI6InRyb24yMXZhaWJoYXZAZ21haWwuY29tIiwiYWRkcmVzcyI6eyJjb3VudHJ5IjoiSW5kaWEiLCJzdGF0ZSI6IlVQIiwiY2l0eSI6IkphdW5wdXIiLCJsYW5kbWFyayI6Ik5lYXIgRE0gUmVzaWRlbmNlIn0sImlhdCI6MTY4OTAwNjUzNCwiZXhwIjoxNjkxNTk4NTM0fQ.HIkjIe2vzlkT8eLd8A0iuRm-iln09RCstK8G_aKaUgg"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/healthcare/getuserBiodata/2021071042"
+			},
+			"response": []
+		},
+		{
+			"name": "Create User Bio Data (HealthCare)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OTlkZWVhMWU0NjQzYzA2N2JlNWU5NSIsIm5hbWUiOiJBbnVyYWcgU2luZ2giLCJoZWFsdGhjYXJlSWQiOjIwMjEwNzExMTAsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODc5NjYxNDgsImV4cCI6MTY5MDU1ODE0OH0.zlsIFx0_BmhqpRvoauu53o_3ocAoiELrNl1g7ZvPG_w"
+					}
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"health_id\": \"2021071110\",\r\n    \"fname\": \"Anurag\",\r\n    \"middlename\": \"Kumar\",\r\n    \"lname\": \"Singh\",\r\n    \"sex\": \"Male\",\r\n    \"dob\": \"20/08/2202\",\r\n    \"bloodgrp\": \"O+\",\r\n    \"BMI\": \"90\",\r\n    \"MarriageStatus\": \"Single\",\r\n    \"Weight\": \"74Kg\",\r\n    \"email\": \"vaibhavwateam@gmail.com\",\r\n    \"mobilenumber\": \"2021071110\",\r\n    \"aadharNumber\": \"2021071110\",\r\n    \"Primarylocation\": \"Patna, Bihar\",\r\n    \"sibling\": \"Yes\",\r\n    \"twin\": \"No\",\r\n    \"fathername\": \"Pappa\",\r\n    \"mothername\": \"Mummy\",\r\n    \"emergencynumber\": \"2021071110\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/createuserBio"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Appointments (Healthcare)",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJJRCI6IjY0OWRiZWMxMDlkYjQwZTI3MGJmM2ZlNiIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoY2FyZUlkIjoyMDIxMDcxMDQyLCJlbWFpbCI6IjIxc2h1YmhhbTExQGdtYWlsLmNvbSIsImFkZHJlc3MiOnsiY291bnRyeSI6IkluZGlhIiwic3RhdGUiOiJVUCIsImNpdHkiOiJWYXJhbmFzaGkiLCJsYW5kbWFyayI6IkR1cmdhS3VuZCBSb2FkIn0sImlhdCI6MTY4ODcxNjQ0MSwiZXhwIjoxNjkxMzA4NDQxfQ.oHVcbjXu7gN_OtsykolF7M9tXP_12jKU8X5eLUVZHDQ"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/healthcaredetails/healthcare/appointment"
+			},
+			"response": []
+		},
+		{
+			"name": "Get Health User Preferances",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": {
+						"token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaGVhbHRoSWQiOjIwMjEwNzEwNDIsImVtYWlsIjoidHJvbjIxdmFpYmhhdkBnbWFpbC5jb20iLCJpYXQiOjE2ODg3NTgxNTQsImV4cCI6MTY5MTM1MDE1NH0.hz_TjP3aj9e99ZbIIxDkSe4xuNPDQ1TNBjYHFUix2kc"
+					}
+				},
+				"method": "GET",
+				"header": [],
+				"url": "{{AWS_URL}}/api/v1/userdetails/preferances"
+			},
+			"response": []
+		},
+		{
+			"name": "Login HealthCare",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"healthcareId\":2021071042,\r\n    \"healthcarelicense\":\"2021071041\",\r\n    \"password\":\"12345\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": "{{AWS_URL}}/api/v1/healthcareauth/login"
+			},
+			"response": []
+		}
+	]
+}
