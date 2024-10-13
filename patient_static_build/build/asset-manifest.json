@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/static/css/main.43c3433e.css",
-    "main.js": "/static/js/main.f656d5f0.js",
+    "main.js": "/static/js/main.527e6689.js",
     "static/media/profileLogo.png": "/static/media/profileLogo.28d941a3dc0dba4eb2e1.png",
     "static/media/BharatSevaLogo1.png": "/static/media/BharatSevaLogo1.f9eb3a6fa2dd4d2d70b6.png",
     "index.html": "/index.html",
     "main.43c3433e.css.map": "/static/css/main.43c3433e.css.map",
-    "main.f656d5f0.js.map": "/static/js/main.f656d5f0.js.map"
+    "main.527e6689.js.map": "/static/js/main.527e6689.js.map"
   },
   "entrypoints": [
     "static/css/main.43c3433e.css",
-    "static/js/main.f656d5f0.js"
+    "static/js/main.527e6689.js"
   ]
 }

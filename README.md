@@ -48,7 +48,8 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
 - Postman in your local system
 - Docker (this is Optional, if you want to contribute to UI only them setting up container will help you to test your application.) 
 ### Steps
-1. **Clone the repository**:
+1. Fork the repository, clone the repo in your local system using 
+    ```git clone <your-repo-url> .```
 2. Install dependencies
     - Run command ```npm i```
     - Setup .env file in root directory with following variables
@@ -61,6 +62,7 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
         JWT_LIFETIME=30d
         Patient_JWT_LIFETIME=Patient_JWT_LIFETIME
         Patient_JWT_SECRET_KEY=30d
+        PORT=5000
      ```
     - Setup Firebase project and app, you'll be get following config keys in project setting
      ```
@@ -85,8 +87,8 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
     - After your Healthcare account created, you can create User Biodata with ```Create User Bio Data (HealthCare)``` enpoint, which user can register and login themselves inorder to use platform.
     - Now, you can use ```Register User``` and ```Login User``` endpoint to verify and create your user account.
     - Refer to Postman Collection, if you've any doubt regarding anything or if you thing there's anything you can add, feel free to raise issue.
-    - You can drop your issue in https://t.me/+8sy5M-KU5cNmZWZl I'll be resolve it as soon as possible.
-    - Refer to CONTRIBUTING.md file for more. Happy Contributions :).
+    - You can drop your issue in [↗️](https://t.me/+8sy5M-KU5cNmZWZl) I'll be resolve it as soon as possible.
+    - Refer to CONTRIBUTING.md file for more. Happy Contributions ✅.
 
 
 ## Project Structure
