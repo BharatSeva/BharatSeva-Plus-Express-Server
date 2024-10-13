@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "02c0e72f-fdd9-4db8-a9bc-0f7a24d9a838",
 		"name": "Bharat Seva",
-		"description": "Bharat Seva REST APIs",
+		"description": "BharatSeva Endpoints Collections",
 		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
 		"_exporter_id": "24259607"
 	},

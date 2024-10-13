@@ -2,7 +2,7 @@
 
 Thank you for considering contributing to **Bharat Seva+**! Your contributions help improve the project and make it better for everyone. Whether you’re reporting an issue, suggesting a feature, submitting code changes, or updating documentation, this guide will help ensure a smooth contribution process.
 
----
+--- 
 
 ## How to Contribute
 
@@ -32,7 +32,7 @@ Follow the project's coding standards.
 - Keep your changes focused and avoid unrelated modifications.
 - Test your changes locally.
 - Ensure your code is linted and formatted consistently (if applicable).
-- Take proper screenshots of your improvements, if applicable to verify your changes.
+- Take proper screenshots of your improvements, if possible of your changes.
 
 
 ### 6. Write Meaningful Commit Messages
