@@ -59,5 +59,5 @@ Once your changes are ready:
 - Ensure your PR passes all tests and linting checks (if any).
 
 ### 10. Merging the PR
-Once your PR is approved, it will be merged into the main repository, and ```hacktoberfest-accepted``` label will be added.
+Once your PR is approved, it will be merged into the main repository, and ```hacktoberfest-accepted``` label will be added.  
 Congratulations on your contribution! 🎉

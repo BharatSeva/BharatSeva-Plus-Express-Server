@@ -8,14 +8,28 @@ app.use('/', (req, res, next)=>{
     next();
 })
 
+const path = require('path');
+
+app.use('/healthcare', express.static(path.join(__dirname, 'healthcare_static_build/build')));
+app.get('/healthcare/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'healthcare_static_build/build', 'index.html'));
+});
+
+app.use('/', express.static(path.join(__dirname, 'patient_static_build/build')));
+app.get('/user/*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'patient_static_build/build', 'index.html'));
+});
+
+
 // Extra Security packages goes here
 const helmet = require('helmet')
 const cors = require("cors")
+app.use(cors())
 const xss = require("xss-clean")
 
 // Flexible Rate Limiter!
-const { RateLimit } = require("./MiddleWare/RateLimiter")
-app.use(RateLimit)
+// const { RateLimit } = require("./MiddleWare/RateLimiter")
+// app.use(RateLimit)
 
 // Express Rate Limiter
 const rateLimiter = require("express-rate-limit");
@@ -23,13 +37,12 @@ const rateLimiter = require("express-rate-limit");
 // Security Goes Here
 
 app.set('trust proxy', 1);
-app.use(rateLimiter({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-})
-);
+// app.use(rateLimiter({
+//     windowMs: 15 * 60 * 1000,
+//     max: 100,
+// })
+// );
 app.use(helmet.crossOriginResourcePolicy({ policy: "cross-origin" }));
-app.use(cors())
 app.use(xss())
 
 // Incoming Data to JSON
@@ -73,9 +86,11 @@ app.use("/api/v1/healthcare", authentication, GET_Patient)
 // Connect to MongoDB
 const ConnectDB = require("./MongoDB/Database")
 const PORT = process.env.PORT || 5000;
+// If cloud is not present then use local cluster
+const URL = process.env.MONGODB_URL || "mongodb://mongodb:27017/mydatabase"   
 const start = async () => {
     try {
-        await ConnectDB(process.env.MONGODB_URL);
+        await ConnectDB(URL);
         app.listen(PORT, console.log(`Server is Listening to port ${PORT}.....`))
     } catch (error) {
         console.log("Something Went Wrong, Message: ", error.message)
