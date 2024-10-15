@@ -1,7 +1,25 @@
 # Bharat Seva+ Express Server
 
 Welcome to the Express server for **Bharat Seva+**, a MERN + Firebase project designed to facilitate seamless appointments between patients and healthcare professionals. This server handles user authentication, data management, and API interactions for the front-end applications.
-Refer to [Official Organisation](https://github.com/BharatSeva) to get better idea of this whole project.
+Refer to [Official Organisation](https://github.com/BharatSeva) to get better idea of this whole project.  
+
+
+---
+> [!TIP]
+> Hi everyone! Hope you're doing well, this is to let you know that you can access webapps hosted on public links using these credentials:
+> ### [User Interface 🔗](http://4.236.178.190:5000/user/login)  
+> **HealthID** :    2021071042  
+> **Password** :  12345  
+> ### [HealthCare Interface 🔗](http://4.236.178.190:5000/healthcare/login)  
+> **HealthCare Number** :  2021071042  
+> **License Number** :     2021071042  
+> **Password** : 00000
+
+
+> [!NOTE]  
+> I've increased Request limits for above ID's, If exhausted let me know I'll increase it.
+---
+
 
 ## Table of Contents
 - [Features](#features)
