@@ -6,19 +6,23 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
 
 ---
 > [!TIP]
-> Hi everyone! Hope you're doing well, this is to let you know that you can access webapps hosted on public links using these credentials:
-> ### [User Interface 🔗](http://4.236.178.190:5000/user/login)  
-> **HealthID** :    2021071042  
-> **Password** :  12345  
-> ### [HealthCare Interface 🔗](http://4.236.178.190:5000/healthcare/login)  
-> **HealthCare Number** :  2021071042  
-> **License Number** :     2021071042  
-> **Password** : 00000
+> Hi everyone! Hope you're doing well, this is to let you know that you can access webapps hosted on public links:   
+> - [User Interface](https://github.com/BharatSeva/BharatSeva-Plus-User-Interface)  
+> - [HealthCare Interface](https://github.com/BharatSeva/BharatSeva-Plus-HealthCare-Interface)  
 
+## Target : Scale this Server for Massive 50 Million Users 🚀
+### Upcoming Features:
+- **RabbitMQ** or **Kafka** Ensures the application can process tasks asynchronously.  
+- **Redis** Caching frequently accessed data
+- **NGINX** Traffic Management and Load balancing
+- **Golang** Server for optimized performance, scalability, and concurrency
+- **PostgreSQL** To handle advance querying, and to perform large data analytics.
+- **Prometheus and Grafana** To collect and stores metric data as time-series data, and for analytics and visualization of Express application.
 
-> [!NOTE]  
-> I've increased Request limits for above ID's, If exhausted let me know I'll increase it.
----
+### Future Plans:
+- Transition from a monolithic architecture to microservices
+- Continuously improve code quality to ensure long-term maintainability
+
 
 
 ## Table of Contents
@@ -66,11 +70,18 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
 - Postman in your local system
 - Docker (this is Optional, if you want to contribute to UI only them setting up container will help you to test your application.) 
 ### Steps
-1. Fork the repository, clone the repo in your local system using 
-    ```git clone <your-repo-url> .```
-2. Install dependencies
-    - Run command ```npm i```
+1. Fork the repository, clone the repo in your local system using
+
+    ```
+       git clone http://<your-repo-url>/.git .
+    ```
+3. Install dependencies
+    - Run command  
+      ```
+        npm i
+      ```
     - Setup .env file in root directory with following variables
+      
      ```
         MONGODB_URL=<your-cluster-url-goes-here>  # set this only rest are not necessary
         JWT_SECRET_KEY=JWT_SECRET_KEY
@@ -83,6 +94,7 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
         PORT=5000
      ```
     - Setup Firebase project and app, you'll be get following config keys in project setting
+   
      ```
        apiKey=<apiKey>
        authDomain=<authDomain>
@@ -91,22 +103,26 @@ Refer to [Official Organisation](https://github.com/BharatSeva) to get better id
        messagingSenderId=<messagingSenderId>
        appId=<appId>
        measurementId=<measurementId>
-  
      ```
 
-3. Run the server:
-    - Run ```npm start``` to start your server.
+4. Run the server:
+     ```
+       npm start
+     ```
 
-4. Alternately you can setup docker-compose file and use command ```docker-compose up -d``` to start your container, make sure you've added all the required env variables.
+6. Alternately you can setup docker-compose file and use following command to start your container, make sure you've added all the required env variables.
+    ```
+       docker-compose up -d
+    ```
 
-5. Go to ```http://localhost:5000/``` for user dashboard, and ```http://localhost:5000/healthcare/``` for Healthcare dashboard.
+8. Go to ```http://localhost:5000/``` for user dashboard, and ```http://localhost:5000/healthcare/``` for Healthcare dashboard.
 
-6. This project consist of two webapps User( also Referred as Patient) and Healthcare dashboard. If you're first time user you first need to create your healthcare account via Postman api collection with ```Register Healthcare``` endpoint in``` HealthCare_endpoints``` folder or you can use UI dashboard by hitting ```http://localhost:5000/healthcare/``` url in your favourite browser.
+9. This project consist of two webapps User( also Referred as Patient) and Healthcare dashboard.
+    - If you're first time user you first need to create your healthcare account via Postman api collection with ```Register Healthcare``` endpoint in``` HealthCare_endpoints``` folder or you can use UI dashboard by hitting ```http://localhost:5000/healthcare/``` url in your favourite browser.
     - After your Healthcare account created, you can create User Biodata with ```Create User Bio Data (HealthCare)``` enpoint, which user can register and login themselves inorder to use platform.
     - Now, you can use ```Register User``` and ```Login User``` endpoint to verify and create your user account.
-    - Refer to Postman Collection, if you've any doubt regarding anything or if you thing there's anything you can add, feel free to raise issue.
-    - You can drop your issue in [↗️](https://t.me/+8sy5M-KU5cNmZWZl) I'll be resolve it as soon as possible.
-    - Refer to CONTRIBUTING.md file for more. Happy Contributions ✅.
+    - Refer to Postman Collection, if you've any doubt in endpoints or if you thing there's feature you can add, feel free to raise issue.
+    - You can start discussion about specific topic for your doubt.  
 
 
 ## Project Structure
@@ -168,4 +184,4 @@ Please find ```Bharat Seva.postman_collection.json``` for request endpoints. Imp
 licensed under the MIT License.
 
 ## Contributing
-Please find CONTRIBUTING.md file to get better idea regarding contributions.
+Please find [CONTRIBUTING](./CONTRIBUTING.md) file to get better idea regarding contributions.
