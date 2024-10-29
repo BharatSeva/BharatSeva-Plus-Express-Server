@@ -1,0 +1,661 @@
+{
+	"info": {
+		"_postman_id": "02c0e72f-fdd9-4db8-a9bc-0f7a24d9a838",
+		"name": "Bharat Seva",
+		"description": "BharatSeva Endpoints Collections",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "24259607"
+	},
+	"item": [
+		{
+			"name": "Patient_Endpoints",
+			"item": [
+				{
+					"name": "Get User BioDetails (User)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaWF0IjoxNjg2NjUxMjE5LCJleHAiOjE2ODkyNDMyMTl9.GD8hX7KChYMkYMf6WvrELk9I1V6MMqYto7N3WkthNOQ",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "{{localURL}}/api/v1/userdetails/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Register User",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"health_id\":2021071042,\r\n    \"email\":\"tron21vaibhav@gmail.com\",\r\n    \"password\":12345\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}}/api/v1/userauth/userregister"
+					},
+					"response": []
+				},
+				{
+					"name": "Login User",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var token = jsonData.token;\r",
+									"var name = jsonData.name;\r",
+									"var healthId = jsonData.healthId;\r",
+									"\r",
+									"pm.collectionVariables.set(\"user_token\", token);\r",
+									"pm.collectionVariables.set(\"user_name\", name);\r",
+									"pm.collectionVariables.set(\"user_health_id\", healthId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"health_id\":2021071042,\r\n    \"password\":\"12345\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "http://localhost:5000/api/v1/userauth/userlogin"
+					},
+					"response": []
+				},
+				{
+					"name": "Get_HealthCareNames",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "id",
+								"value": "2021071042",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": "{{localURL}} /api/v1/user/gethealthcarename"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appointment For User",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/userdetails/appointment"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Records (User)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/userdetails/records"
+					},
+					"response": []
+				},
+				{
+					"name": "Get HealthCare For User Appointment",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}} /api/v1/user/gethealthcare/2021071042"
+					},
+					"response": []
+				},
+				{
+					"name": "Create A User Appointment",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"healthcare_name\": \"Vaibhav Hospitals\",\r\n    \"appointment_date\":\"30-02-2023\",\r\n    \"note\":\"Just You And Me\",\r\n    \"appointment_time\":\"10:00 AM T0 12:00 PM\",\r\n    \"department\":\"Psycology\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}} /api/v1/userdetails/:healthcare/createappointment",
+							"host": [
+								"{{localURL}} "
+							],
+							"path": [
+								"api",
+								"v1",
+								"userdetails",
+								":healthcare",
+								"createappointment"
+							],
+							"variable": [
+								{
+									"key": "healthcare",
+									"value": "2021071042"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Account Activity Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/userdetails/accountactivitylog"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Account Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}}/api/v1/userdetails/stats"
+					},
+					"response": []
+				},
+				{
+					"name": "Change Health User Preferances",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"LockedAccount\":\"Allowed\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}} /api/v1/userdetails/preferances"
+					},
+					"response": []
+				},
+				{
+					"name": "Get HealthCare Details Stats",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/healthcaredetails/stats"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Health User Preferances",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{user_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/userdetails/preferances"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "HealthCare_endpoints",
+			"item": [
+				{
+					"name": "Register HealthCare",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "health_id",
+								"value": "2021071042",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"healthcareName\": \"Vaibhav Yadav\",\r\n    \"availability\": \"Yes\",\r\n    \"total_facilities\": 200,\r\n    \"state\": \"UP\",\r\n    \"country\": \"India\",\r\n    \"landmark\": \"DurgaKund Road\",\r\n    \"city\": \"Varanashi\",\r\n    \"total_mbbs_doc\": 58,\r\n    \"total_worker\": \"400\",\r\n    \"no_of_beds\": 200,\r\n    \"healthcareId\": 2021071042,\r\n    \"healthcarelicense\": \"2021071042\",\r\n    \"email\": \"vaibhavwateam@gmail.com\",\r\n    \"appointment_fee\": 300,\r\n    \"about\": \"I'm Anurag Hospital -- Made By Vaibhav Yadav\",\r\n    \"password\": \"00000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{localURL}}/api/v1/healthcareauth/register",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"healthcareauth",
+								"register"
+							],
+							"query": [
+								{
+									"key": "Health_Id",
+									"value": "2021071042",
+									"disabled": true
+								}
+							]
+						},
+						"description": "**With This Endpoint You Can Be Registered As A Healthcare.**"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Records (HealthCare)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJQYXRpZW50X1VTRVJJRCI6IjY0MTM2MmY5MmI1YzA3YWUyY2M5YmYyYyIsIm5hbWUiOiJWYWliaGF2IFlhZGF2IiwiaWF0IjoxNjc5NjY1MTg5LCJleHAiOjE2ODIyNTcxODl9.sxlAXzFx74BQX7hlxvW1sZF7dWV3kW0N67ZAztxSJ50",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{localURL}}/api/v1/healthcare/getpatientrecords?healthId=2021071042",
+							"host": [
+								"{{localURL}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"healthcare",
+								"getpatientrecords"
+							],
+							"query": [
+								{
+									"key": "healthId",
+									"value": "2021071042"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Records",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDEzNjA5MTBlNWMzYzE0MzJhYjhiYTkiLCJuYW1lIjoiVmFpYmhhdiBZYWRhdiIsImlhdCI6MTY3OTc0NTEzNiwiZXhwIjoxNjgyMzM3MTM2fQ.LHnas5hnNk816s-7cK86GWg2iCeUjHQ6FEgZzQ08dFY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"p_problem\":\"This WOne is From me\",\r\n    \"description\":\"Mild Fever, loose Motion and Vomiting\",\r\n    \"health_id\":2021071042,\r\n    \"medical_severity\":\"Semi-mid\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}}/api/v1/healthcare/createpatientproblem"
+					},
+					"response": []
+				},
+				{
+					"name": "Get HealthCareInfo (HealthCare)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}}  /api/v1/healthcaredetails/getdetails"
+					},
+					"response": []
+				},
+				{
+					"name": "Change HealthCare Preferances",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"tron21vaibhav@gmail.com\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}} /api/v1/healthcaredetails/healthcare/changepreferance"
+					},
+					"response": []
+				},
+				{
+					"name": "Get HealthCare Preferances",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/healthcaredetails/healthcare/getpreferance"
+					},
+					"response": []
+				},
+				{
+					"name": "Delete HealthCare Account",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": "{{localURL}} /api/v1/healthcaredetails/healthcare/deleteaccount"
+					},
+					"response": []
+				},
+				{
+					"name": "Get User Bio Data (HealthCare)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/healthcare/getuserBiodata/2021071042"
+					},
+					"response": []
+				},
+				{
+					"name": "Create User Bio Data (HealthCare)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"health_id\": \"2021071042\",\r\n    \"fname\": \"Vaibhav\",\r\n    \"middlename\": \"Kumar\",\r\n    \"lname\": \"Yadav\",\r\n    \"sex\": \"Male\",\r\n    \"dob\": \"20/08/2202\",\r\n    \"bloodgrp\": \"O+\",\r\n    \"BMI\": \"90\",\r\n    \"MarriageStatus\": \"Single\",\r\n    \"Weight\": \"74Kg\",\r\n    \"email\": \"tron21vaibhav@gmail.com\",\r\n    \"mobilenumber\": \"2021071042\",\r\n    \"aadharNumber\": \"2021071042\",\r\n    \"Primarylocation\": \"Patna, Bihar\",\r\n    \"sibling\": \"Yes\",\r\n    \"twin\": \"No\",\r\n    \"fathername\": \"Pappa\",\r\n    \"mothername\": \"Mummy\",\r\n    \"emergencynumber\": \"2021071042\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}}/api/v1/healthcaredetails/createuserBio"
+					},
+					"response": []
+				},
+				{
+					"name": "Get Appointments (Healthcare)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": {
+								"token": "{{HIP_token}}"
+							}
+						},
+						"method": "GET",
+						"header": [],
+						"url": "{{localURL}} /api/v1/healthcaredetails/healthcare/appointment"
+					},
+					"response": []
+				},
+				{
+					"name": "Login HealthCare",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var jsonData = pm.response.json();\r",
+									"var token = jsonData.token;\r",
+									"var name = jsonData.name;\r",
+									"var healthcareId = jsonData.healthcareId;\r",
+									"\r",
+									"pm.collectionVariables.set(\"HIP_token\", token);\r",
+									"pm.collectionVariables.set(\"HIP_name\", name);\r",
+									"pm.collectionVariables.set(\"healthcareId\", healthcareId);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"healthcareId\":2021071042,\r\n    \"healthcarelicense\":\"2021071042\",\r\n    \"password\":\"00000\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": "{{localURL}}/api/v1/healthcareauth/login"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Update Patient",
+			"request": {
+				"method": "PATCH",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySUQiOiI2NDEzNjA5MTBlNWMzYzE0MzJhYjhiYTkiLCJuYW1lIjoiVmFpYmhhdiBZYWRhdiIsImlhdCI6MTY3OTA2OTk2NywiZXhwIjoxNjc5MTU2MzY3fQ.r9FS17IoT5gLOS8J2FxvCx9v7FlheBD2GO5ExXMtmbM",
+						"type": "text"
+					}
+				],
+				"url": "{{AWS_URL}}/hip/UpdatePatient/2021071042"
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "HIP_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "localURL",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "healthcareId",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "HIP_name",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "user_token",
+			"value": ""
+		},
+		{
+			"key": "user_name",
+			"value": ""
+		},
+		{
+			"key": "user_health_id",
+			"value": ""
+		}
+	]
+}
