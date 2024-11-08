@@ -1,3 +1,12 @@
+> [!IMPORTANT]  
+> ## [ Bharat Seva+ Legacy API ]  
+> This **Express-based backend** has been replaced by a new microservices architecture powered by **Golang**, **Python**, and **Express**. The new system provides better scalability, maintainability, and performance.  
+>  
+> The current Express service is no longer actively maintained and is only provided for reference or legacy use cases. For the latest features, APIs, and updates, please refer to the respective microservices repositories.
+
+
+
+
 # Bharat Seva+ Express Server
 
 Welcome to the Express server for **Bharat Seva+**, a MERN + Firebase project designed to facilitate seamless appointments between patients and healthcare professionals. This server handles user authentication, data management, and API interactions for the front-end applications.
